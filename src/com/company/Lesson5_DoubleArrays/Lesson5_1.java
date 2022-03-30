@@ -26,11 +26,11 @@ public class Lesson5_1 {
             System.out.println();
         }
     }
-    public static int[][] inputArrayWithRandom(int n, int c, int a, int b) {
+    public static int[][] inputArrayWithRandom(int n, int m, int a, int b) {
         Random random = new Random();
-        int[][] arr = new int[n][c];
+        int[][] arr = new int[n][m];
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < c; j++) {
+            for (int j = 0; j < m; j++) {
                 arr[i][j] = random.nextInt(a, b);
             }
         }

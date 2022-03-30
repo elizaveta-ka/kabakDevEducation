@@ -9,7 +9,7 @@ public class Lesson4_1 {
         int [] a =  inputArrayWithRandom(n, 0, 20);
         printArray(a, n);
         int min = a[0];
-        for (int i = 0; i < a.length; i++) {
+        for (int i = 1; i < a.length; i++) {
             if(a[i] < min) {
                 min = a[i];
             }

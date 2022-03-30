@@ -13,7 +13,7 @@ public class Lesson3_14 {
         if (n > 1) {
             for (int i = 1; i <= n; i++) {
                 denominator1 *= x + i;
-                result1 += 1 / denominator1;
+                result1 += 1 / denominator1;         // b = 1; b/=(x+1); sum \+=b;
             }
         }
 

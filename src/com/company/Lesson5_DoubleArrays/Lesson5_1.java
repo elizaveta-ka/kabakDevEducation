@@ -1,17 +1,16 @@
 package com.company.Lesson5_DoubleArrays;
 
-import java.util.Arrays;
 import java.util.Random;
 
 public class Lesson5_1 {
     public static void main(String[] args) {
-        int [][] arrayTwo = inputArrayWithRandom(9,9,0,10);
+        int [][] arrayTwo = inputArrayWithRandom(9,9,0,9);
         printArray(arrayTwo);
         int min = arrayTwo[0][0];
-        for (int i = 0; i < arrayTwo.length; i++) {
+        for (int[] ints : arrayTwo) {
             for (int j = 0; j < arrayTwo[0].length; j++) {
-                if (arrayTwo[i][j] < min) {
-                    min = arrayTwo[i][j];
+                if (ints[j] < min) {
+                    min = ints[j];
                 }
             }
         }
@@ -19,9 +18,9 @@ public class Lesson5_1 {
         System.out.println(min);
     }
     public static void printArray(int[][] a) {
-        for (int i = 0; i < a.length; i++) {
+        for (int[] ints : a) {
             for (int j = 0; j < a[0].length; j++) {
-                System.out.print(" " + a[i][j] + " ");
+                System.out.print(" " + ints[j] + " ");
             }
             System.out.println();
         }

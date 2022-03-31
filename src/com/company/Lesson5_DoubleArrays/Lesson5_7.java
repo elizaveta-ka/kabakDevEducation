@@ -7,7 +7,7 @@ public class Lesson5_7 {
     public static void main(String[] args) {
         int n = 5;
         int m = 6;
-        int [][] arr = inputArrayWithRandom(n, m, 0, 2);
+        double [][] arr = inputArrayWithRandom(n, m, 0, 1);
         boolean [] arrNew = new boolean[m];            // для пункта а) задачи
         boolean [] arrNew2 = new boolean[n];          // для пункта б) задачи
         boolean [] arrNew3 = new boolean[n];          // для пункта с) задачи
@@ -59,7 +59,7 @@ public class Lesson5_7 {
              }
             System.out.println(Arrays.toString(arrNew3));
     }
-    public static void printArray(int[][] a, int n, int m) {
+    public static void printArray(double[][] a, int n, int m) {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 System.out.print(a[i][j] + "   ");
@@ -67,14 +67,17 @@ public class Lesson5_7 {
             System.out.println();
         }
     }
-    public static int [][] inputArrayWithRandom(int n, int m, int a, int b) {
+    public static double [][] inputArrayWithRandom(int n, int m, double a, double b) {
         Random random = new Random();
-        int [][] arr = new int[n][m];
+        double [][] arr = new double[n][m];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
-                arr[i][j] = random.nextInt(a,b);
+                arr[i][j] = random.nextDouble(a,b);
             }
         }
         return arr;
     }
+    // Не знаю куда применить String.format, чтобы ограничить double одной цифрой после запятой.
+    //Пока думаю над этим.
+    //Задачу решала на int-ах, чтобы точно проверить, что код работает.
 }

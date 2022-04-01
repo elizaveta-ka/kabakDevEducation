@@ -7,19 +7,12 @@ public class Lesson4_3 {
         int n = 20;
         int [] a =  Lesson4_1.inputArrayWithRandom(n, 0, 20);
         Lesson4_1.printArray(a, n);
-
-        int min = a[0];
-        for (int i = 0; i < a.length; i++) {
-            if(a[i] < min) {
-                min = a[i];
+        int minIndex = 0;
+        for (int i = 0; i < n; i++) {
+            if (a[minIndex] > a[i]) {
+                minIndex = i;
             }
         }
-        System.out.println(min);
-        for (int i = 0; i < a.length; i++) {
-            if (a[i] == min) {
-                System.out.println(i);
-                break;
-            }
-        }
+        System.out.println(minIndex);
     }
 }

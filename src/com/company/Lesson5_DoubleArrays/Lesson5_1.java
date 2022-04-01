@@ -20,7 +20,11 @@ public class Lesson5_1 {
     public static void printArray(int[][] a) {
         for (int[] ints : a) {
             for (int j = 0; j < a[0].length; j++) {
-                System.out.print("    " + ints[j] + "    ");
+                if (ints[j] < 10) {
+                    System.out.print(ints[j] + "  ");
+                } else {
+                    System.out.print(ints[j] + " ");
+                }
             }
             System.out.println();
         }

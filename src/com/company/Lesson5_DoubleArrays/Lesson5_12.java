@@ -46,6 +46,13 @@ public class Lesson5_12 {
                 x--;
             }
         }
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if (arrayTwo[i][j] == 0) {
+                    arrayTwo[i][j] =  number;
+                }
+            }
+        }
 
         Lesson5_1.printArray(arrayTwo);
     }

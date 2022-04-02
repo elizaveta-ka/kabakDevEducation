@@ -9,12 +9,6 @@ public class Lesson5_10 {
         int [][] arr = Lesson5_1.inputArrayWithRandom(n,m,0,9);
         Lesson5_1.printArray(arr);
         Scanner scanner = new Scanner(System.in);
-        int k = 8;   //scanner.nextInt();
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-
-            }
-
-        }
+        int k = 8;//scanner.nextInt();
     }
 }

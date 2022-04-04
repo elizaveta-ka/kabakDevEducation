@@ -5,8 +5,10 @@ import java.util.Arrays;
 public class task1CodeWars {
     public static void main(String[] args) {
         int [] arr = {-10, -9, -8, -6, -3, -2, -1, 0, 1, 3, 4, 5, 7, 8, 9, 10, 11, 14, 15, 17, 18, 19, 20};
+        int [] arr2 = {-3,-2,-1,2,10,15,16,18,19,20};
         //нужно получить : "-10--8,-6,-3-1,3-5,7-11,14,15,17-20"
         System.out.println(rangeExtraction(arr));
+        System.out.println(rangeExtraction(arr2));
     }
     public static String rangeExtraction(int[] arr) {
         boolean flag = false;
@@ -28,12 +30,12 @@ public class task1CodeWars {
                     break;
                 }
                 if (count >= 3) {
-                    lineNew.append(tr).append(arr[i]).append(", ");
+                    lineNew.append(tr).append(arr[i]).append(",");
                 } else if (count == 2) {
                     i--;
-                    lineNew.append(", ");
+                    lineNew.append(",");
                 } else {
-                    lineNew.append(", ");
+                    lineNew.append(",");
                 }
             }
         return lineNew.toString();

@@ -33,12 +33,12 @@ public class Rectangle {
     return  "Rectangle: " + "a = " + a + "; b = " + b + "; c = " + c + "; d = " + d;
     }
 
-    public static double getSquare (Point a, Point b, Point c, Point d) {
+    public void getSquare () {
        double square = (d.getX() - a.getX()) * (b.getY() - a.getY());
-        return square;
+        System.out.println(square);
     }
-    public static double getPerimeter(Point a, Point b, Point c, Point d) {
+    public void getPerimeter() {
         double perimeter = 2 * ((d.getX() - a.getX()) + (b.getY() - a.getY()));
-        return perimeter;
+        System.out.println(perimeter);
     }
 }

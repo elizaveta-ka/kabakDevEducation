@@ -20,14 +20,14 @@ public class Main {
         // Прямоугольник
         Rectangle r = new Rectangle(p1, p2, new Point(7,4),p3);
         System.out.println(r);
-        System.out.println(Rectangle.getPerimeter(p1,p2,new Point(7,4), p3));
-        System.out.println(Rectangle.getSquare(p1,p2,new Point(7,4), p3));
+        r.getPerimeter();
+        r.getSquare();
 
         // Треугольник
         Triangle triangle = new Triangle(p1,p2,p3);
         System.out.println(triangle);
-        System.out.println(Triangle.getSquareTriangle(p1,p2,p3));
-        System.out.println(Triangle.getPerimeterTriangle(p1,p2,p3));
+        triangle.getPerimeterTriangle();
+        triangle.getSquareTriangle();
     }
 //    public static void printPoint (Point p, int number) {
 //        System.out.println("Point p" + number + ": "+ p.getX() + " " + p.getY());

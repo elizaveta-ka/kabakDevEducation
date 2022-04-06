@@ -25,15 +25,15 @@ public class Triangle {
     public String toString () {
         return "Hello! I'm triangle: " + "e = " + e + "; f = " + f + "; j = " + j;
     }
-    public static double getSquareTriangle(Point e, Point f, Point j) {
+    public void getSquareTriangle() {
         double squareTriangle = ((j.getX() - e.getX()) * (f.getY() - e.getY())) / 2;
-        return squareTriangle;
+        System.out.println(squareTriangle);
     }
-    public static double getPerimeterTriangle(Point e, Point f, Point j) {
+    public void getPerimeterTriangle() {
         double side1 = j.getX() - e.getX();
         double side2 = Math.sqrt(Math.pow((f.getX() - e.getX()), 2) + Math.pow(f.getY() - e.getY(), 2));
         double side3 = Math.sqrt(Math.pow((j.getX() - f.getX()), 2) + Math.pow(f.getY() - e.getY(), 2));
         double perimeterTriangle = side1 + side2 + side3;
-        return perimeterTriangle;
+        System.out.println(perimeterTriangle);
     }
 }

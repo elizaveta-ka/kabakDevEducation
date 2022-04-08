@@ -1,6 +1,8 @@
 package com.company.Figures;
 
-public class Triangle {
+import java.util.Arrays;
+
+public class Triangle extends Figure {
     private Point e;
     private Point f;
     private Point j;
@@ -25,15 +27,18 @@ public class Triangle {
     public String toString () {
         return "Hello! I'm triangle: " + "e = " + e + "; f = " + f + "; j = " + j;
     }
-    public void getSquareTriangle() {
-        double squareTriangle = ((j.getX() - e.getX()) * (f.getY() - e.getY())) / 2;
-        System.out.println(squareTriangle);
-    }
-    public void getPerimeterTriangle() {
-        double side1 = j.getX() - e.getX();
-        double side2 = Math.sqrt(Math.pow((f.getX() - e.getX()), 2) + Math.pow(f.getY() - e.getY(), 2));
-        double side3 = Math.sqrt(Math.pow((j.getX() - f.getX()), 2) + Math.pow(f.getY() - e.getY(), 2));
-        double perimeterTriangle = side1 + side2 + side3;
-        System.out.println(perimeterTriangle);
-    }
+        @Override
+        public double getArea() {
+            return super.getArea(Arrays.asList(e, f, j));
+        }
+        @Override
+        public double getPerimeter() {
+          return super.getPerimeter(Arrays.asList(e, f, j));
+         }
+        public void printArea() {
+        System.out.println("My area is " + getArea());
+        }
+         public void printPerimeter() {
+        System.out.println("My perimeter is " + getPerimeter());
+        }
 }

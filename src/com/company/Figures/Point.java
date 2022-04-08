@@ -1,8 +1,10 @@
 package com.company.Figures;
 
+import java.util.ArrayList;
+
 public class Point {
-   protected double x;
-   protected double y;
+    protected double x;
+    protected double y;
 
     public double getX() {
         return x;
@@ -19,4 +21,5 @@ public class Point {
     public String toString () {
         return "Point: " + this.getX() + ", " + this.getY();
     }
+
 }

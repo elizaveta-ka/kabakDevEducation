@@ -1,6 +1,9 @@
 package com.company.Figures;
 
-public class Rectangle {
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class Rectangle extends Figure {
     private Point a;
     private Point b;
     private Point c;
@@ -29,16 +32,23 @@ public class Rectangle {
         return d;
     }
 
-    public  String toString() {
-    return  "Rectangle: " + "a = " + a + "; b = " + b + "; c = " + c + "; d = " + d;
+    public String toString() {
+    return  "I'm Rectangle: " + "a = " + a + "; b = " + b + "; c = " + c + "; d = " + d;
     }
 
-    public void getSquare () {
-       double square = (d.getX() - a.getX()) * (b.getY() - a.getY());
-        System.out.println(square);
+    @Override
+    public double getPerimeter() {
+       return super.getPerimeter(Arrays.asList(a, b, c, d));
     }
-    public void getPerimeter() {
-        double perimeter = 2 * ((d.getX() - a.getX()) + (b.getY() - a.getY()));
-        System.out.println(perimeter);
+    public void printPerimeter() {
+        System.out.println("My perimeter is " + getPerimeter());
+    }
+
+    @Override
+    public double getArea() {
+       return super.getArea(Arrays.asList(a,b,c,d));
+    }
+    public void printArea() {
+        System.out.println("My area is " + getArea());
     }
 }

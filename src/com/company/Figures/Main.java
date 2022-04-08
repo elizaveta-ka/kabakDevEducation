@@ -26,6 +26,17 @@ public class Main {
         circle.printPerimeter();
         circle.printArea();
 
+        // Реализация односвязного списка:
+
+//        Array_list list = new Array_list();
+//        list.add(5);
+//        list.add(5);
+//        list.add(2);
+//        list.add(3);
+//
+//        list.remove(5);
+//
+//        list.print();
 
 
 

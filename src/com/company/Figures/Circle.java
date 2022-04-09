@@ -1,27 +1,17 @@
 package com.company.Figures;
 
+import java.util.List;
+
 public class Circle extends Figure{
-    Point a;
-    Point b;
+    double radius;
 
-    public Circle(Point a, Point b) {
-        this.a = a;
-        this.b = b;
-    }
-
-    public Point getA() {
-        return a;
-    }
-
-    public Point getB() {
-        return b;
-    }
-
-    @Override
-    public String toString() {
-        return "I'm circle. My Points is : " + this.a + "; " + this.b ;
+    public Circle(List<Point> points) {
+        super(points);
+        this.radius = getRadius();
     }
     public double getRadius () {
+        Point a = points.get(0);
+        Point b = points.get(1);
         double radius = Math.sqrt((Math.pow((b.getX() - a.getX()), 2)) + (Math.pow((b.getY() - a.getY()), 2)));
         return radius;
     }
@@ -35,11 +25,5 @@ public class Circle extends Figure{
     public double getArea() {
         double area = Math.PI * Math.pow(getRadius(), 2);
     return area;
-    }
-    public void printPerimeter() {
-        System.out.println("My perimeter is " + getPerimeter());
-    }
-    public void printArea() {
-        System.out.println("My area is " + getArea());
     }
 }

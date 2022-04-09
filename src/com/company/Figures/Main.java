@@ -2,29 +2,54 @@ package com.company.Figures;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        new Point(2,1);
         Point p1 = new Point(2,1);
         Point p2 = new Point(2,4);
         Point p3 = new Point(7,1);
         Point p4 = new Point(7,4);
-        Rectangle rectangle = new Rectangle(p1, p2, p4, p3);
+        // Для прямоугольника
+        List<Point> points = new ArrayList<>(Arrays.asList( p1, p2, p4, p3));
+        Figure rectangle = new Rectangle(points);
+
         System.out.println(rectangle);
-        rectangle.printPerimeter();
-        rectangle.printArea();
+        System.out.println(rectangle.getPerimeter());
+        System.out.println(rectangle.getArea());
 
-        Triangle triangle1 = new Triangle(p1,p2,p3);
-        System.out.println(triangle1);
-        triangle1.printPerimeter();
-        triangle1.printArea();
+        // Для треугольника
+        List<Point> points1 = new ArrayList<>(Arrays.asList(p1,p2,p3));
 
+        Figure triangle = new Triangle(points1);
+        System.out.println(triangle);
+        System.out.println(triangle.getPerimeter());
+        System.out.println(triangle.getArea());
 
-        Circle circle = new Circle(p1,p2);
+        // Для круга
+        List<Point> points3 = new ArrayList<>(Arrays.asList(p1,p2));
+        Figure circle = new Circle(points3);
         System.out.println(circle);
-        circle.printPerimeter();
-        circle.printArea();
+        System.out.println(circle.getPerimeter());
+        System.out.println(circle.getArea());
+
+
+//
+//        Circle circle = new Circle(p1,p2);
+//        System.out.println(circle);
+//        circle.printPerimeter();
+//        circle.printArea();                 // List
+
+
+//        int n = 5;
+//        Point [] pointsArr = new Point[n];
+//        Random random = new Random();
+//        for (int i = 0; i < n; i++) {
+//            pointsArr[i] = new Point( - 3 + (n /2 - i) * random.nextInt(0, 5), -2 + random.nextInt(-2, 2));
+//        }
+//
 
         // Реализация односвязного списка:
 

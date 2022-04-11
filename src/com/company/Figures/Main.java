@@ -38,7 +38,8 @@ public class Main {
         List<Point> points = new ArrayList<>(Arrays.asList(p1,p2,p3));
         FigureCreator cr = new FigureCreator();
         System.out.println(cr.createFigure(points));
-
+        System.out.println(cr.createFigure(points).getPerimeter());
+        System.out.println(cr.createFigure(points).getArea());
 
 //
 //        Circle circle = new Circle(p1,p2);

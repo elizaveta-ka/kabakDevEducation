@@ -9,14 +9,23 @@ public abstract class Figure {
         this.points = points;
     }
 
+//    public String toString() {
+//        String className = this.getClass().getSimpleName();
+//        StringBuilder result = new StringBuilder("My name is " + className + " points: ");
+//        for (var point : points) {
+//            result.append(point).append("; ");
+//        }
+//        return result.toString();
+//    }
     public String toString() {
         String className = this.getClass().getSimpleName();
         String result = "My name is " + className + " points: ";
         for (var point : points) {
-            result+=point +"; ";
+            result += point +"; ";
         }
         return result;
     }
+
 
     protected double getPerimeter() {
         double perimeter = 0;

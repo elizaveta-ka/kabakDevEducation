@@ -8,32 +8,36 @@ import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
-        Point p1 = new Point(2,1);
-        Point p2 = new Point(2,4);
-        Point p3 = new Point(7,1);
-        Point p4 = new Point(7,4);
+        Point p1 = new Point(2, 1);
+        Point p2 = new Point(2, 4);
+        Point p3 = new Point(7, 1);
+        Point p4 = new Point(7, 4);
         // Для прямоугольника
-        List<Point> points = new ArrayList<>(Arrays.asList( p1, p2, p4, p3));
-        Figure rectangle = new Rectangle(points);
+//        List<Point> points = new ArrayList<>(Arrays.asList(p1, p2, p4, p3));
+//        Figure rectangle = new Rectangle(points);
+//
+//        System.out.println(rectangle);
+//        System.out.println(rectangle.getPerimeter());
+//        System.out.println(rectangle.getArea());
+//
+//        // Для треугольника
+//        List<Point> points1 = new ArrayList<>(Arrays.asList(p1, p2, p3));
+//
+//        Figure triangle = new Triangle(points1);
+//        System.out.println(triangle);
+//        System.out.println(triangle.getPerimeter());
+//        System.out.println(triangle.getArea());
+//
+//        // Для круга
+//        List<Point> points3 = new ArrayList<>(Arrays.asList(p1, p2));
+//        Figure circle = new Circle(points3);
+//        System.out.println(circle);
+//        System.out.println(circle.getPerimeter());
+//        System.out.println(circle.getArea());
 
-        System.out.println(rectangle);
-        System.out.println(rectangle.getPerimeter());
-        System.out.println(rectangle.getArea());
-
-        // Для треугольника
-        List<Point> points1 = new ArrayList<>(Arrays.asList(p1,p2,p3));
-
-        Figure triangle = new Triangle(points1);
-        System.out.println(triangle);
-        System.out.println(triangle.getPerimeter());
-        System.out.println(triangle.getArea());
-
-        // Для круга
-        List<Point> points3 = new ArrayList<>(Arrays.asList(p1,p2));
-        Figure circle = new Circle(points3);
-        System.out.println(circle);
-        System.out.println(circle.getPerimeter());
-        System.out.println(circle.getArea());
+        List<Point> points = new ArrayList<>(Arrays.asList(p1,p2,p3));
+        FigureCreator cr = new FigureCreator();
+        System.out.println(cr.createFigure(points));
 
 
 //
@@ -62,15 +66,6 @@ public class Main {
 //        list.remove(5);
 //
 //        list.print();
-
-
-
-
-
-
-
-
-
 
 
 //        System.out.println("Point p1: " + p1.getX() + " " + p1.getY());

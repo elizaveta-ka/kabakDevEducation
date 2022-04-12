@@ -1,8 +1,9 @@
 package com.company.Figures;
 
+import java.io.Serializable;
 import java.util.List;
 
-public abstract class Figure {
+public abstract class Figure implements Serializable {
     public List<Point> points;
 
     public Figure(List<Point> points) {

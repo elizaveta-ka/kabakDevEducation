@@ -1,10 +1,12 @@
 package com.company.Figures;
 
 
+import com.company.Figures.CreateColorFactory.CreateColorFactory;
+import com.company.Figures.CreateFigures.FigureCreator;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 public class Main {
     public static void main(String[] args) {
@@ -36,10 +38,14 @@ public class Main {
 //        System.out.println(circle.getArea());
 
         List<Point> points = new ArrayList<>(Arrays.asList(p1,p2,p3));
-        FigureCreator cr = new FigureCreator();
-        System.out.println(cr.createFigure(points));
-        System.out.println(cr.createFigure(points).getPerimeter());
-        System.out.println(cr.createFigure(points).getArea());
+        FigureCreator creator = new FigureCreator();           //Создатель фигуры
+        CreateColorFactory color = new CreateColorFactory();   //Окрашивает фигуру
+
+        System.out.println(color.paintFigure(points));
+        System.out.println(creator.createFigure(points));
+        System.out.println(creator.createFigure(points).getArea());
+        System.out.println(creator.createFigure(points).getPerimeter());
+
 
         // Создание цвета фигур. Абстрактная фабрика ?
 //        GreenFigureFactory green = new GreenFigureFactory();

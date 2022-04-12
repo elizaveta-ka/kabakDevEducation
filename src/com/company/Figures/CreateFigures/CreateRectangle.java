@@ -1,4 +1,8 @@
-package com.company.Figures;
+package com.company.Figures.CreateFigures;
+
+import com.company.Figures.Figure;
+import com.company.Figures.Point;
+import com.company.Figures.Rectangle;
 
 import java.util.List;
 

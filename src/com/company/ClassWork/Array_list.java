@@ -1,4 +1,4 @@
-package com.company.Figures;
+package com.company.ClassWork;
 
 public class Array_list {
     private Node head;

@@ -41,11 +41,19 @@ public class Main {
         System.out.println(cr.createFigure(points).getPerimeter());
         System.out.println(cr.createFigure(points).getArea());
 
+        // Создание цвета фигур. Абстрактная фабрика ?
+//        GreenFigureFactory green = new GreenFigureFactory();
+//        System.out.println(green.createFigure(points));
+//        System.out.println(green.createColor());
 //
-//        Circle circle = new Circle(p1,p2);
-//        System.out.println(circle);
-//        circle.printPerimeter();
-//        circle.printArea();                 // List
+//        YellowFigureFactory yellow = new YellowFigureFactory();
+//        System.out.println(yellow.createColor());
+        // Создание цвета фигур. Абстрактная фабрика ?
+//
+//        Circle cir = new Circle(p1,p2);
+//        System.out.println(cir);
+//        cir.printPerimeter();
+//        cir.printArea();                 // List
 
 
 //        int n = 5;

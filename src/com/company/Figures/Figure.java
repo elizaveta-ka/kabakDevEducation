@@ -18,6 +18,9 @@ public abstract class Figure implements Serializable {
 //        }
 //        return result.toString();
 //    }
+    public String paintFigure (String color) {
+        return "Figure is colored " + color;
+        }
     public String toString() {
         String className = this.getClass().getSimpleName();
         String result = "My name is " + className + " points: ";

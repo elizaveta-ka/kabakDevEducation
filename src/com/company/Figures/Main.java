@@ -1,7 +1,9 @@
 package com.company.Figures;
+//
+//
+//import com.company.Figures.CreateColorFactory.CreateColorFactory;
+//import com.company.Figures.CreateFigures.FigureCreator;
 
-
-import com.company.Figures.CreateColorFactory.CreateColorFactory;
 import com.company.Figures.CreateFigures.FigureCreator;
 
 import java.util.ArrayList;
@@ -14,47 +16,34 @@ public class Main {
         Point p2 = new Point(2, 4);
         Point p3 = new Point(7, 1);
         Point p4 = new Point(7, 4);
-        // Для прямоугольника
-//        List<Point> points = new ArrayList<>(Arrays.asList(p1, p2, p4, p3));
-//        Figure rectangle = new Rectangle(points);
-//
-//        System.out.println(rectangle);
-//        System.out.println(rectangle.getPerimeter());
-//        System.out.println(rectangle.getArea());
-//
-//        // Для треугольника
-//        List<Point> points1 = new ArrayList<>(Arrays.asList(p1, p2, p3));
-//
-//        Figure triangle = new Triangle(points1);
-//        System.out.println(triangle);
-//        System.out.println(triangle.getPerimeter());
-//        System.out.println(triangle.getArea());
-//
-//        // Для круга
-//        List<Point> points3 = new ArrayList<>(Arrays.asList(p1, p2));
-//        Figure circle = new Circle(points3);
-//        System.out.println(circle);
-//        System.out.println(circle.getPerimeter());
-//        System.out.println(circle.getArea());
+//         Для прямоугольника
+        List<Point> points = new ArrayList<>(Arrays.asList(p1, p2, p4, p3));
+        Figure rectangle = new Rectangle(points);
 
-        List<Point> points = new ArrayList<>(Arrays.asList(p1,p2,p3));
-        FigureCreator creator = new FigureCreator();           //Создатель фигуры
-        CreateColorFactory color = new CreateColorFactory();   //Окрашивает фигуру
+        System.out.println(rectangle);
+        System.out.println(rectangle.getPerimeter());
+        System.out.println(rectangle.getArea());
 
-        System.out.println(color.paintFigure(points));
-        System.out.println(creator.createFigure(points));
-        System.out.println(creator.createFigure(points).getArea());
-        System.out.println(creator.createFigure(points).getPerimeter());
+        // Для треугольника
+        List<Point> points1 = new ArrayList<>(Arrays.asList(p1, p2, p3));
 
+        Figure triangle = new Triangle(points1);
+        System.out.println(triangle);
+        System.out.println(triangle.getPerimeter());
+        System.out.println(triangle.getArea());
 
-        // Создание цвета фигур. Абстрактная фабрика ?
-//        GreenFigureFactory green = new GreenFigureFactory();
-//        System.out.println(green.createFigure(points));
-//        System.out.println(green.createColor());
-//
-//        YellowFigureFactory yellow = new YellowFigureFactory();
-//        System.out.println(yellow.createColor());
-        // Создание цвета фигур. Абстрактная фабрика ?
+        // Для круга
+        List<Point> points3 = new ArrayList<>(Arrays.asList(p1, p2));
+        Figure circle = new Circle(points3);
+        System.out.println(circle);
+        System.out.println(circle.getPerimeter());
+        System.out.println(circle.getArea());
+
+        List<Point> points4 = new ArrayList<>(Arrays.asList(p1,p2,p3));
+        FigureCreator creator = new FigureCreator();
+        System.out.println(creator.createFigure(points4));
+        System.out.println(creator.createFigure(points4).paintFigure("blue"));
+
 //
 //        Circle cir = new Circle(p1,p2);
 //        System.out.println(cir);

@@ -1,7 +1,5 @@
 package com.company.Motocycles;
 
-import com.company.Motocycles.Honda.*;
-
 public class Main {
     public static void main(String[] args) {
         IMotocycles moto = getFactoryByTypeOfMotocycles("Sport");

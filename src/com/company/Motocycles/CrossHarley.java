@@ -1,4 +1,4 @@
-package com.company.Motocycles.Honda;
+package com.company.Motocycles;
 
 import com.company.Motocycles.IHarleyDavidson;
 

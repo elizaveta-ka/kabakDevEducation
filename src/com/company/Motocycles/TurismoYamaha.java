@@ -1,6 +1,4 @@
-package com.company.Motocycles.Honda;
-
-import com.company.Motocycles.IYamaha;
+package com.company.Motocycles;
 
 public class TurismoYamaha implements IYamaha {
     @Override

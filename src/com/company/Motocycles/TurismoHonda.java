@@ -1,4 +1,4 @@
-package com.company.Motocycles.Honda;
+package com.company.Motocycles;
 
 public class TurismoHonda implements IHonda {
     @Override

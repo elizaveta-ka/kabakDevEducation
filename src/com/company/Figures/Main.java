@@ -44,6 +44,7 @@ public class Main {
         System.out.println(creator.createFigure(points4));
         System.out.println(creator.createFigure(points4).paintFigure("blue"));
 
+
 //
 //        Circle cir = new Circle(p1,p2);
 //        System.out.println(cir);

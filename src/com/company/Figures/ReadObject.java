@@ -15,6 +15,7 @@ public class ReadObject {
             Figure figure2 = (Figure) ois.readObject();
             System.out.println(figure1);
             System.out.println(figure2);
+            ois.close();
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

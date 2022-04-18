@@ -1,8 +1,9 @@
 package com.company.Figures;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Point {
+public class Point implements Serializable {
     protected double x;
     protected double y;
 

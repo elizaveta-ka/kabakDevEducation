@@ -35,6 +35,8 @@ public class ReadToFile {
             System.out.println(create.createFigure(pointsList).paintFigure("blue"));
             System.out.println(create.createFigure(pointsList).getPerimeter());
             System.out.println(create.createFigure(pointsList).getArea());
+            pointsList.clear();
         }
+        br.close();
     }
 }

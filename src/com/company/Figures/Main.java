@@ -5,51 +5,81 @@ package com.company.Figures;
 //import com.company.Figures.CreateFigures.FigureCreator;
 
 import com.company.Figures.CreateFigures.FigureCreator;
+import jdk.swing.interop.SwingInterOpUtils;
 
+import javax.xml.crypto.Data;
+import javax.xml.crypto.XMLCryptoContext;
+import javax.xml.crypto.dsig.Transform;
+import javax.xml.crypto.dsig.TransformException;
+import java.io.OutputStream;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        Point p1 = new Point(2, 1);
-        Point p2 = new Point(2, 4);
-        Point p3 = new Point(7, 1);
-        Point p4 = new Point(7, 4);
+        Point p1 = new Point(0, 0);
+        Point p2 = new Point(0, 2);
+        Point p3 = new Point(2, 2);
+        Point p4 = new Point(2, 0);
+        Point p5 = new Point(3,2);
 //         Для прямоугольника
-        List<Point> points = new ArrayList<>(Arrays.asList(p1, p2, p4, p3));
-        Figure rectangle = new Rectangle(points);
+        List<Point> points = new ArrayList<>(Arrays.asList(p1, p2, p3, p4));
+//        Figure rectangle = new Rectangle(points);
+//
+//        System.out.println(rectangle);
+//        System.out.println(rectangle.getPerimeter());
+//        System.out.println(rectangle.getArea());
+//        //Перемещение
+//        rectangle.move(2,-3);
+//        System.out.println(rectangle);
+//        //Масштабирование
+//        rectangle.scale(2);
+//        System.out.println(rectangle.getPerimeter());
+        //Поворот
+//        System.out.println(rectangle.getCenterFigure().toString());
+        FigureCreator creator = new FigureCreator();
+        Figure figure = creator.createFigure(points);
+        System.out.println(figure);
+        Point center = figure.getCenterFigure();
+        figure.rotate(center,360);
+        System.out.println(figure);
 
-        System.out.println(rectangle);
-        System.out.println(rectangle.getPerimeter());
-        System.out.println(rectangle.getArea());
 
+//
         // Для треугольника
-        List<Point> points1 = new ArrayList<>(Arrays.asList(p1, p2, p3));
-
-        Figure triangle = new Triangle(points1);
-        System.out.println(triangle);
-        System.out.println(triangle.getPerimeter());
-        System.out.println(triangle.getArea());
+//        List<Point> points1 = new ArrayList<>(Arrays.asList(p1, p2, p3));
+//
+//        Figure triangle = new Triangle(points1);
+//        System.out.println(triangle);
+//        System.out.println(triangle.getPerimeter());
+//        System.out.println(triangle.getArea());
+//
 
         // Для круга
-        List<Point> points3 = new ArrayList<>(Arrays.asList(p1, p2));
-        Figure circle = new Circle(points3);
-        System.out.println(circle);
-        System.out.println(circle.getPerimeter());
-        System.out.println(circle.getArea());
+//        List<Point> points3 = new ArrayList<>(Arrays.asList(p1, p2));
+//        Figure circle = new Circle(points3);
+//        System.out.println(circle);
+//        System.out.println(circle.getPerimeter());
+//        System.out.println(circle.getArea());
+//        circle.move(2,3);
+//        System.out.println(circle);
+//        circle.scale(2);
+//        System.out.println(circle.getPerimeter());
 
-        List<Point> points4 = new ArrayList<>(Arrays.asList(p1,p2,p3));
-        FigureCreator creator = new FigureCreator();
-        System.out.println(creator.createFigure(points4));
-        System.out.println(creator.createFigure(points4).paintFigure("blue"));
+//
+//        List<Point> points4 = new ArrayList<>(Arrays.asList(p1,p2,p3));
+//        FigureCreator creator = new FigureCreator();
+//        System.out.println(creator.createFigure(points4));
+//        System.out.println(creator.createFigure(points4).paintFigure("blue"));
 //
 //        Circle cir = new Circle(p1,p2);
 //        System.out.println(cir);
 //        cir.printPerimeter();
-//        cir.printArea();                 // List
+//        cir.printArea();
 
-
+        // List
 //        int n = 5;
 //        Point [] pointsArr = new Point[n];
 //        Random random = new Random();

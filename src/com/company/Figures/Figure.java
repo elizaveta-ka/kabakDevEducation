@@ -107,8 +107,12 @@ public abstract class Figure implements Serializable {
         }
     }
 //    protected void sortPoints() {
+//        ArrayList<Point> sortPoints = new ArrayList<>(points.size());
+//        sortPoints.add(points.get(0));
 //        for (int i = 0; i < points.size(); i++) {
-//
+//        if ((points.get(i+1).getX() > points.get(i).getX()) || (points.get(i+1).getY() > points.get(i).getY())) {
+//            sortPoints.add(points.get(i+1));
+//        } else if ()
 //        }
-    }
+//    }
 }

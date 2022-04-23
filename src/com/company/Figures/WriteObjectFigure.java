@@ -22,12 +22,22 @@ public class WriteObjectFigure {
         Figure figure4 = creator.createFigure(Arrays.asList(p1,p2,p3,p4,p5));
         ArrayList<Figure> figures = new ArrayList<>(Arrays.asList(figure1,figure2,figure3,figure4));
 
+//        try (FileOutputStream fos = new FileOutputStream("figuresArray.bin");
+//             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+//            oos.writeObject(figures);
+//
+//        } catch (IOException ex) {
+//            System.out.println("Exception");
+//        }
         try (FileOutputStream fos = new FileOutputStream("figuresArray.bin");
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(figures);
+            for (int i = 0; i < figures.size(); i++) {
+                oos.writeObject(figures.get(i));
+            }
 
         } catch (IOException ex) {
             System.out.println("Exception");
         }
+
     }
 }

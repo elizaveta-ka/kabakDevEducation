@@ -1,8 +1,4 @@
-
 {"type":"com.company.Figures.Circle","points":[{"x":0.0,"y":0.0},{"x":0.0,"y":2.0}]}
-
 {"type":"com.company.Figures.Triangle","points":[{"x":0.0,"y":0.0},{"x":0.0,"y":2.0},{"x":2.0,"y":2.0}]}
-
 {"type":"com.company.Figures.Rectangle","points":[{"x":0.0,"y":0.0},{"x":0.0,"y":2.0},{"x":2.0,"y":2.0},{"x":2.0,"y":0.0}]}
-
 {"type":"com.company.Figures.NAngle","points":[{"x":0.0,"y":0.0},{"x":0.0,"y":2.0},{"x":2.0,"y":2.0},{"x":2.0,"y":0.0},{"x":3.0,"y":2.0}]}

@@ -32,7 +32,6 @@ public class WriteJsonObject {
         ObjectMapper mapper = new ObjectMapper();
         BufferedWriter bwr = new BufferedWriter(new FileWriter("JsonForExample.json"));
         for (var f : figures) {
-            writer.write("\n");
             mapper.writeValue(writer,f);
             writer.write("\n");
         }

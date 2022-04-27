@@ -16,8 +16,7 @@ public class ReadJsonObject {
         BufferedReader br = new BufferedReader(new FileReader("JsonForExample.json"));
         ObjectMapper mapper = new ObjectMapper();
         String json;
-        while (br.readLine() != null) {
-            json = br.readLine();
+        while ((json = br.readLine()) != null) {
             Figure figure = mapper.readValue(json,Figure.class);
             System.out.println(figure);
         }

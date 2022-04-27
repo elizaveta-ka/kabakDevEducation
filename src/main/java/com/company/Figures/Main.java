@@ -7,6 +7,7 @@ package com.company.Figures;
 import com.company.Figures.CreateFigures.FigureCreator;
 import jdk.swing.interop.SwingInterOpUtils;
 
+import javax.swing.*;
 import javax.xml.crypto.Data;
 import javax.xml.crypto.XMLCryptoContext;
 import javax.xml.crypto.dsig.Transform;
@@ -21,19 +22,19 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Point p1 = new Point(0, 0);
-        Point p2 = new Point(0, 2);
-        Point p3 = new Point(2, 2);
-        Point p4 = new Point(2, 0);
-        Point p5 = new Point(3,2);
+//        Point p1 = new Point(0, 0);
+//        Point p2 = new Point(0, 2);
+//        Point p3 = new Point(2, 2);
+//        Point p4 = new Point(2, 0);
+//        Point p5 = new Point(3,2);
 //         Для прямоугольника
-        List<Point> points = new ArrayList<>(Arrays.asList(p1, p2, p3, p4));
-        Figure rectangle = new Rectangle(points);
-//
-        System.out.println(rectangle);
-        System.out.println(rectangle.getPerimeter());
-        System.out.println(rectangle.getArea());
-        //Перемещение
+//        List<Point> points = new ArrayList<>(Arrays.asList(p1, p2, p3, p4));
+//        Figure rectangle = new Rectangle(points);
+////
+//        System.out.println(rectangle);
+//        System.out.println(rectangle.getPerimeter());
+//        System.out.println(rectangle.getArea());
+//        //Перемещение
 //        rectangle.move(2,-3);
 //        System.out.println(rectangle);
         //Масштабирование
@@ -45,11 +46,10 @@ public class Main {
 //        System.out.println(figure);
 //        Point center = figure.getCenterFigure();
 //        System.out.println(center);
-        rectangle.rotate(180);
-        System.out.println(rectangle);
+//        rectangle.rotate(180);
+//        System.out.println(rectangle);
 
         //JSON
-
 
 
 //
@@ -139,8 +139,25 @@ public class Main {
 //
 //
 
-    }
+
 //    public static void printPoint (Point p, int number) {
 //        System.out.println("Point p" + number + ": "+ p.getX() + " " + p.getY());
 //    }
+        //JPANEL
+        Point p1 = new Point(100, 100);
+        Point p2 = new Point(100, 200);
+        Point p3 = new Point(200, 200);
+        Point p4 = new Point(300, 400);
+        Point p5 = new Point(400, 500);
+        ArrayList<Figure> figures = new ArrayList<>();
+        FigureCreator creator = new FigureCreator();
+        figures.add(creator.createFigure(Arrays.asList(p1, p2)));
+        figures.add(creator.createFigure(Arrays.asList(p1, p2, p3)));
+        figures.add(creator.createFigure(Arrays.asList(p1, p2, p3, p4)));
+        figures.add(creator.createFigure(Arrays.asList(p1, p2, p3, p4, p5)));
+        JPanelExample jPanelExample = new JPanelExample(figures);
+        JFrame frame = new JFrame();
+        frame.add(jPanelExample);
+        frame.setVisible(true);
+    }
 }

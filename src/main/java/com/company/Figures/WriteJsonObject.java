@@ -28,14 +28,16 @@ public class WriteJsonObject {
         NAngle figure4 = new NAngle(Arrays.asList(p1, p2, p3, p4, p5));
         ArrayList<Figure> figures = new ArrayList<>(Arrays.asList(figure1, figure2, figure3, figure4));
 
-        JsonFactory jsonFactory = new JsonFactory();
-        jsonFactory.configure(JsonGenerator.Feature.AUTO_CLOSE_TARGET, false);
-        ObjectMapper mapper = new ObjectMapper(jsonFactory);
+        StringWriter writer = new StringWriter();
+        ObjectMapper mapper = new ObjectMapper();
+
+        for (var f:figures) {
+        mapper.writeValue(writer,f);
+        writer.write("\n");
+        }
+
         BufferedWriter bwr = new BufferedWriter(new FileWriter("JsonForExample.json"));
-        mapper.writeValue(bwr, figures);
-//        mapper.writeValue(bwr, figure2);
-//        mapper.writeValue(bwr, figure3);
-//        mapper.writeValue(bwr, figure4);
+        bwr.write(writer.toString());
         bwr.close();
     }
 }

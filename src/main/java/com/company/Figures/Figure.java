@@ -43,6 +43,10 @@ public abstract class Figure implements Serializable {
         return result.toString();
     }
 
+    public List<Point> getPoints() {
+        return points;
+    }
+
     protected double getPerimeter() {
         double perimeter = 0;
         for (int i = 0; i < points.size(); i++) {

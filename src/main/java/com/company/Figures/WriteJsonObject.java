@@ -17,7 +17,7 @@ public class WriteJsonObject {
         Point p3 = new Point(2, 2);
         Point p4 = new Point(2, 0);
         Point p5 = new Point(3, 2);
-//        FigureCreator creator = new FigureCreator();
+        FigureCreator creator = new FigureCreator();
 //        Figure figure1 = creator.createFigure(Arrays.asList(p1,p2));
 //        Figure figure2 = creator.createFigure(Arrays.asList(p1,p2,p3));
 //        Figure figure3 = creator.createFigure(Arrays.asList(p1,p2,p3,p4));
@@ -30,13 +30,12 @@ public class WriteJsonObject {
 
         StringWriter writer = new StringWriter();
         ObjectMapper mapper = new ObjectMapper();
-
-        for (var f:figures) {
-        mapper.writeValue(writer,f);
-        writer.write("\n");
-        }
-
         BufferedWriter bwr = new BufferedWriter(new FileWriter("JsonForExample.json"));
+        for (var f : figures) {
+            writer.write("\n");
+            mapper.writeValue(writer,f);
+            writer.write("\n");
+        }
         bwr.write(writer.toString());
         bwr.close();
     }

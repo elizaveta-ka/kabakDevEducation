@@ -16,17 +16,11 @@ public class ReadJsonObject {
         BufferedReader br = new BufferedReader(new FileReader("JsonForExample.json"));
         ObjectMapper mapper = new ObjectMapper();
         String json;
-        while (br.read() != -1) {
+        while (br.readLine() != null) {
             json = br.readLine();
-            System.out.println(json);
+            Figure figure = mapper.readValue(json,Figure.class);
+            System.out.println(figure);
         }
         br.close();
     }
 }
-//        StringReader reader = new StringReader("JsonForExample.json");
-//        ObjectMapper mapper = new ObjectMapper();
-//        while(reader.read() != -1) {
-//            Figure figure = mapper.readValue(reader, Figure.class);
-//            System.out.println(figure);
-//        }
-//    }

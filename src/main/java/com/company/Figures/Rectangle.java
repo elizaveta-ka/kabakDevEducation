@@ -12,4 +12,8 @@ public class Rectangle extends Figure {
     public Rectangle(List<Point> points) {
         super(points);
     }
+    @Override
+    public double getRadius() {
+        return 0;
+    }
 }

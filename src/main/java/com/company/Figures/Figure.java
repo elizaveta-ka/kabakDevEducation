@@ -17,17 +17,19 @@ import java.util.List;
         {@JsonSubTypes.Type (value = Triangle.class, name = "Triangle"),
                 @JsonSubTypes.Type (value = Circle.class, name = "Circle"),
 @JsonSubTypes.Type (value = Rectangle.class, name = "Rectangle")})
-@JsonIgnoreProperties({"perimeter", "area"})
+@JsonIgnoreProperties({"perimeter", "area", "radius"})
 public abstract class Figure implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     public List<Point> points;
+    double radius;
 
     public  Figure() {
 
     }
     public Figure(List<Point> points) {
         this.points = points;
+        this.radius = getRadius();
     }
 
     public String paintFigure(String color) {
@@ -45,6 +47,12 @@ public abstract class Figure implements Serializable {
 
     public List<Point> getPoints() {
         return points;
+    }
+    public double getRadius() {
+        Point a = points.get(0);
+        Point b = points.get(1);
+        double radius = Math.sqrt((Math.pow((b.getX() - a.getX()), 2)) + (Math.pow((b.getY() - a.getY()), 2)));
+        return radius;
     }
 
     protected double getPerimeter() {

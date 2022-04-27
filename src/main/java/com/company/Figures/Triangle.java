@@ -13,5 +13,8 @@ public class Triangle extends Figure {
     public Triangle(List<Point> points) {
        super(points);
     }
-
+    @Override
+    public double getRadius() {
+        return 0;
+    }
 }

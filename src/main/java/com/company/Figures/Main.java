@@ -4,6 +4,7 @@ package com.company.Figures;
 //import com.company.Figures.CreateColorFactory.CreateColorFactory;
 //import com.company.Figures.CreateFigures.FigureCreator;
 
+import com.company.Figures.CreateFigures.ButtonDemo;
 import com.company.Figures.CreateFigures.FigureCreator;
 import jdk.swing.interop.SwingInterOpUtils;
 
@@ -13,6 +14,8 @@ import javax.xml.crypto.XMLCryptoContext;
 import javax.xml.crypto.dsig.Transform;
 import javax.xml.crypto.dsig.TransformException;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.security.spec.AlgorithmParameterSpec;
@@ -169,22 +172,101 @@ public class Main {
         FigureCreator creator = new FigureCreator();
         figures.add(creator.createFigure(Arrays.asList(p13, p14)));
         figures.add(creator.createFigure(Arrays.asList(p1, p2, p3)));
-        figures.add(creator.createFigure(Arrays.asList(p4,p5,p6,p7)));
+        figures.add(creator.createFigure(Arrays.asList(p4, p5, p6, p7)));
         figures.add(creator.createFigure(Arrays.asList(p8, p9, p10, p11, p12)));
-
-        JPanelExample jPanelExample = new JPanelExample(figures);
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        frame.setTitle("Рисуем фигуры");
-        frame.setBackground(Color.gray);
-        frame.setVisible(true);
-        frame.add(jPanelExample);
-
-//        Button createFigure = new Button("СОЗДАТЬ ФИГУРУ");
+//
+//        JPanelExample jPanelExample = new JPanelExample(figures);
+//        JFrame frame = new JFrame();
+//        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+//        frame.setTitle("Рисуем фигуры");
+//        frame.setBackground(Color.gray);
+//        frame.setVisible(true);
+//        frame.add(jPanelExample);
+//
+//        JButton createFigure = new JButton("СОЗДАТЬ ФИГУРУ");
 //        createFigure.setBackground(Color.ORANGE);
 //        createFigure.setVisible(true);
 //        createFigure.setBounds(100,100,100,100);
 //        createFigure.setSize(250,250);
+//        frame.getContentPane().setLayout(null);
 //        frame.add(createFigure);
+        //Создаем кнопку
+        JFrame frame = new JFrame();
+        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+        frame.setTitle("Рисуем фигуры");
+        frame.setVisible(true);
+        frame.getContentPane().setLayout(null); //кнопка будет не на весь экран
+
+        JButton button1 = new JButton("СОЗДАТЬ ФИГУРУ");
+        JButton button2 = new JButton("УДАЛИТЬ ФИГУРУ");
+        JButton button3 = new JButton("ПОВОРОТ ФИГУРЫ");
+        JButton button4 = new JButton("МАСШТАБИРОВАНИЕ ФИГУРЫ");
+        JButton button5 = new JButton("ДВИЖЕНИЕ ФИГУРЫ");
+        JButton button6 = new JButton("ВЫВЕСТИ ВСЕ СОЗДАННЫЕ ФИГУРЫ");
+
+        button1.setSize(300,100);
+        button1.setBackground(Color.ORANGE);
+        button1.setLocation(0,0);
+
+        button2.setSize(300,100);
+        button2.setBackground(Color.ORANGE);
+        button2.setLocation(0,100);
+
+        button3.setSize(300,100);
+        button3.setBackground(Color.ORANGE);
+        button3.setLocation(0,200);
+
+        button4.setSize(300,100);
+        button4.setBackground(Color.ORANGE);
+        button4.setLocation(0,300);
+
+        button5.setSize(300,100);
+        button5.setBackground(Color.ORANGE);
+        button5.setLocation(0,400);
+
+        button6.setSize(300,100);
+        button6.setBackground(Color.ORANGE);
+        button6.setLocation(0,500);
+
+//        JFrame choiceFrame = new JFrame();
+//        choiceFrame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+//        choiceFrame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+//        choiceFrame.setVisible(true);
+//        choiceFrame.getContentPane().setLayout(null);
+
+        Checkbox circle = new Checkbox("Создаем круг");
+        Checkbox triangle = new Checkbox("Создаем треугольник");
+        Checkbox rectangle = new Checkbox("Создаем четырехугольник");
+        Checkbox nangle = new Checkbox("Создаем многоугольник");
+        circle.setBounds(10,10,300,20);
+        triangle.setBounds(10,30,300,20);
+        rectangle.setBounds(10,50,300,20);
+        nangle.setBounds(10,70,300,20);
+
+         ActionListener listener1 = new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                    JFrame choiceFrame = new JFrame();
+//                    choiceFrame.pack();
+                    choiceFrame.setVisible(true);
+                    frame.setVisible(false);
+                     choiceFrame.add(circle);
+                     choiceFrame.add(triangle);
+                     choiceFrame.add(rectangle);
+                     choiceFrame.add(nangle);
+             }
+         };
+         button1.addActionListener(listener1);
+         button2.addActionListener(listener1);
+         button3.addActionListener(listener1);
+         button4.addActionListener(listener1);
+         button5.addActionListener(listener1);
+         button6.addActionListener(listener1);
+        frame.add(button1);
+        frame.add(button2);
+        frame.add(button3);
+        frame.add(button4);
+        frame.add(button5);
+        frame.add(button6);
     }
 }

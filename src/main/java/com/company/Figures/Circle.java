@@ -13,7 +13,7 @@ public class Circle extends Figure {
 
     public Circle(List<Point> points) {
         super(points);
-        this.radius = getRadius();
+//        this.radius = getRadius();
     }
     @Override
     public double getPerimeter() {

@@ -86,6 +86,8 @@ public abstract class Figure implements Serializable {
         for (int i = 0; i < points.size(); i++) {
             points.get(i).setX(points.get(i).getX() + a);
             points.get(i).setY(points.get(i).getY() + b);
+            this.getPerimeter(); //пересчитывает периметр и площадь
+            this.getArea();
         }
     }
 
@@ -111,10 +113,8 @@ public abstract class Figure implements Serializable {
     protected Point getCenterFigure() {
         ArrayList<Point> tmp = new ArrayList<>(points);
         ArrayList<Point> centers = new ArrayList<>();
-
         do {
             centers.clear();
-
             for (int i = 1; i < tmp.size() - 1; i++) {
                 centers.add(getCenterTriangle(tmp.get(0), tmp.get(i), tmp.get(i + 1)));
             }

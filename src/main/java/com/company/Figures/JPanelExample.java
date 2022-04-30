@@ -26,11 +26,11 @@ public class JPanelExample extends JPanel {
 
     public void paint(Graphics g) {
         for (var f:figures) {
+            if (f.getPoints().size() == 2) {
+                g.drawOval((int) f.getPoints().get(0).getX(), (int) f.getPoints().get(0).getY(), (int) (f.getRadius() * 2), (int) (f.getRadius() * 2));
+            } else {
             for (int i = 0; i < f.getPoints().size(); i++) {
-                Point value1 = f.getPoints().get(i);
-                if (f.getPoints().size() == 2) {
-                    g.drawOval((int) f.getPoints().get(0).getX(), (int) f.getPoints().get(0).getY(), (int) (f.getRadius() * 2), (int) (f.getRadius() * 2));
-                } else {
+                    Point value1 = f.getPoints().get(i);
                     int temp = i + 1 < f.getPoints().size() ? i + 1 : 0;
                     Point value2 = f.getPoints().get(temp);
                     g.drawLine((int) value1.getX(), (int) value1.getY(), (int) value2.getX(), (int) value2.getY());

@@ -3,8 +3,6 @@ package com.company.Figures;
 //
 //import com.company.Figures.CreateColorFactory.CreateColorFactory;
 //import com.company.Figures.CreateFigures.FigureCreator;
-
-import com.company.Figures.CreateFigures.ButtonDemo;
 import com.company.Figures.CreateFigures.FigureCreator;
 import jdk.swing.interop.SwingInterOpUtils;
 
@@ -26,6 +24,24 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
+        //javaFX
+
+
+
+
+
+
+
+
+
+
+//        //GUI
+//        SimpleGUIProject smplGui = new SimpleGUIProject();
+//        smplGui.setVisible(true);
+
+
+
+
 //        Point p1 = new Point(0, 0);
 //        Point p2 = new Point(0, 2);
 //        Point p3 = new Point(2, 2);
@@ -149,31 +165,31 @@ public class Main {
 //    }
         //JPANEL
 
-        Point p1 = new Point(100, 100);
-        Point p2 = new Point(200, 200);
-        Point p3 = new Point(300, 200);
-
-        Point p4 = new Point(400, 200);
-        Point p5 = new Point(400, 400);
-        Point p6 = new Point(500, 400);
-        Point p7 = new Point(500, 200);
-
-        Point p8 = new Point(600, 200);
-        Point p9 = new Point(600, 400);
-        Point p10 = new Point(700, 500);
-        Point p11 = new Point(800, 400);
-        Point p12 = new Point(800, 200);
-
-        Point p13 = new Point(100, 400);
-        Point p14 = new Point(200, 300);
-
-
-        ArrayList<Figure> figures = new ArrayList<>();
-        FigureCreator creator = new FigureCreator();
-        figures.add(creator.createFigure(Arrays.asList(p13, p14)));
-        figures.add(creator.createFigure(Arrays.asList(p1, p2, p3)));
-        figures.add(creator.createFigure(Arrays.asList(p4, p5, p6, p7)));
-        figures.add(creator.createFigure(Arrays.asList(p8, p9, p10, p11, p12)));
+//        Point p1 = new Point(100, 100);
+//        Point p2 = new Point(200, 200);
+//        Point p3 = new Point(300, 200);
+//
+//        Point p4 = new Point(400, 200);
+//        Point p5 = new Point(400, 400);
+//        Point p6 = new Point(500, 400);
+//        Point p7 = new Point(500, 200);
+//
+//        Point p8 = new Point(600, 200);
+//        Point p9 = new Point(600, 400);
+//        Point p10 = new Point(700, 500);
+//        Point p11 = new Point(800, 400);
+//        Point p12 = new Point(800, 200);
+//
+//        Point p13 = new Point(100, 400);
+//        Point p14 = new Point(200, 300);
+//
+//
+//        ArrayList<Figure> figures = new ArrayList<>();
+//        FigureCreator creator = new FigureCreator();
+//        figures.add(creator.createFigure(Arrays.asList(p13, p14)));
+//        figures.add(creator.createFigure(Arrays.asList(p1, p2, p3)));
+//        figures.add(creator.createFigure(Arrays.asList(p4, p5, p6, p7)));
+//        figures.add(creator.createFigure(Arrays.asList(p8, p9, p10, p11, p12)));
 //
 //        JPanelExample jPanelExample = new JPanelExample(figures);
 //        JFrame frame = new JFrame();
@@ -189,84 +205,84 @@ public class Main {
 //        createFigure.setBounds(100,100,100,100);
 //        createFigure.setSize(250,250);
 //        frame.getContentPane().setLayout(null);
-//        frame.add(createFigure);
-        //Создаем кнопку
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-        frame.setTitle("Рисуем фигуры");
-        frame.setVisible(true);
-        frame.getContentPane().setLayout(null); //кнопка будет не на весь экран
-
-        JButton button1 = new JButton("СОЗДАТЬ ФИГУРУ");
-        JButton button2 = new JButton("УДАЛИТЬ ФИГУРУ");
-        JButton button3 = new JButton("ПОВОРОТ ФИГУРЫ");
-        JButton button4 = new JButton("МАСШТАБИРОВАНИЕ ФИГУРЫ");
-        JButton button5 = new JButton("ДВИЖЕНИЕ ФИГУРЫ");
-        JButton button6 = new JButton("ВЫВЕСТИ ВСЕ СОЗДАННЫЕ ФИГУРЫ");
-
-        button1.setSize(300,100);
-        button1.setBackground(Color.ORANGE);
-        button1.setLocation(0,0);
-
-        button2.setSize(300,100);
-        button2.setBackground(Color.ORANGE);
-        button2.setLocation(0,100);
-
-        button3.setSize(300,100);
-        button3.setBackground(Color.ORANGE);
-        button3.setLocation(0,200);
-
-        button4.setSize(300,100);
-        button4.setBackground(Color.ORANGE);
-        button4.setLocation(0,300);
-
-        button5.setSize(300,100);
-        button5.setBackground(Color.ORANGE);
-        button5.setLocation(0,400);
-
-        button6.setSize(300,100);
-        button6.setBackground(Color.ORANGE);
-        button6.setLocation(0,500);
-
-//        JFrame choiceFrame = new JFrame();
-//        choiceFrame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-//        choiceFrame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
-//        choiceFrame.setVisible(true);
-//        choiceFrame.getContentPane().setLayout(null);
-
-        Checkbox circle = new Checkbox("Создаем круг");
-        Checkbox triangle = new Checkbox("Создаем треугольник");
-        Checkbox rectangle = new Checkbox("Создаем четырехугольник");
-        Checkbox nangle = new Checkbox("Создаем многоугольник");
-        circle.setBounds(10,10,300,20);
-        triangle.setBounds(10,30,300,20);
-        rectangle.setBounds(10,50,300,20);
-        nangle.setBounds(10,70,300,20);
-
-         ActionListener listener1 = new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                    JFrame choiceFrame = new JFrame();
-//                    choiceFrame.pack();
-                    choiceFrame.setVisible(true);
-                    frame.setVisible(false);
-                     choiceFrame.add(circle);
-                     choiceFrame.add(triangle);
-                     choiceFrame.add(rectangle);
-                     choiceFrame.add(nangle);
-             }
-         };
-         button1.addActionListener(listener1);
-         button2.addActionListener(listener1);
-         button3.addActionListener(listener1);
-         button4.addActionListener(listener1);
-         button5.addActionListener(listener1);
-         button6.addActionListener(listener1);
-        frame.add(button1);
-        frame.add(button2);
-        frame.add(button3);
-        frame.add(button4);
-        frame.add(button5);
-        frame.add(button6);
+////        frame.add(createFigure);
+//        //Создаем кнопку
+//        JFrame frame = new JFrame();
+//        frame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+//        frame.setTitle("Рисуем фигуры");
+//        frame.setVisible(true);
+//        frame.getContentPane().setLayout(null); //кнопка будет не на весь экран
+//
+//        JButton button1 = new JButton("СОЗДАТЬ ФИГУРУ");
+//        JButton button2 = new JButton("УДАЛИТЬ ФИГУРУ");
+//        JButton button3 = new JButton("ПОВОРОТ ФИГУРЫ");
+//        JButton button4 = new JButton("МАСШТАБИРОВАНИЕ ФИГУРЫ");
+//        JButton button5 = new JButton("ДВИЖЕНИЕ ФИГУРЫ");
+//        JButton button6 = new JButton("ВЫВЕСТИ ВСЕ СОЗДАННЫЕ ФИГУРЫ");
+//
+//        button1.setSize(300,100);
+//        button1.setBackground(Color.ORANGE);
+//        button1.setLocation(0,0);
+//
+//        button2.setSize(300,100);
+//        button2.setBackground(Color.ORANGE);
+//        button2.setLocation(0,100);
+//
+//        button3.setSize(300,100);
+//        button3.setBackground(Color.ORANGE);
+//        button3.setLocation(0,200);
+//
+//        button4.setSize(300,100);
+//        button4.setBackground(Color.ORANGE);
+//        button4.setLocation(0,300);
+//
+//        button5.setSize(300,100);
+//        button5.setBackground(Color.ORANGE);
+//        button5.setLocation(0,400);
+//
+//        button6.setSize(300,100);
+//        button6.setBackground(Color.ORANGE);
+//        button6.setLocation(0,500);
+//
+////        JFrame choiceFrame = new JFrame();
+////        choiceFrame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+////        choiceFrame.setDefaultCloseOperation(frame.EXIT_ON_CLOSE);
+////        choiceFrame.setVisible(true);
+////        choiceFrame.getContentPane().setLayout(null);
+//
+//        Checkbox circle = new Checkbox("Создаем круг");
+//        Checkbox triangle = new Checkbox("Создаем треугольник");
+//        Checkbox rectangle = new Checkbox("Создаем четырехугольник");
+//        Checkbox nangle = new Checkbox("Создаем многоугольник");
+//        circle.setBounds(10,10,300,20);
+//        triangle.setBounds(10,30,300,20);
+//        rectangle.setBounds(10,50,300,20);
+//        nangle.setBounds(10,70,300,20);
+//
+//         ActionListener listener1 = new ActionListener() {
+//             @Override
+//             public void actionPerformed(ActionEvent e) {
+//                    JFrame choiceFrame = new JFrame();
+////                    choiceFrame.pack();
+//                    choiceFrame.setVisible(true);
+//                    frame.setVisible(false);
+//                     choiceFrame.add(circle);
+//                     choiceFrame.add(triangle);
+//                     choiceFrame.add(rectangle);
+//                     choiceFrame.add(nangle);
+//             }
+//         };
+//         button1.addActionListener(listener1);
+//         button2.addActionListener(listener1);
+//         button3.addActionListener(listener1);
+//         button4.addActionListener(listener1);
+//         button5.addActionListener(listener1);
+//         button6.addActionListener(listener1);
+//        frame.add(button1);
+//        frame.add(button2);
+//        frame.add(button3);
+//        frame.add(button4);
+//        frame.add(button5);
+//        frame.add(button6);
     }
 }

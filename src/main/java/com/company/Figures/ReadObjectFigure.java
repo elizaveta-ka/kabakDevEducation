@@ -20,8 +20,9 @@ public class ReadObjectFigure {
         ArrayList<Figure> figures = new ArrayList<>();
         try (FileInputStream fis = new FileInputStream("figuresArray.bin");
              ObjectInputStream ois = new ObjectInputStream(fis)) {
-           while ((ois.available()) != -1) {
-               figures.add((Figure) ois.readObject());
+            Object str;
+           while ((str = ois.readObject()) != null) {
+               figures.add((Figure) str);
            }
         } catch (IOException ex) {
             System.out.println("Exception");

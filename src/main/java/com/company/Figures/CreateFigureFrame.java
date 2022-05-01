@@ -32,8 +32,7 @@ public class CreateFigureFrame extends JFrame {
     ActionListener listener2 = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
-            CreateTextFieldXorY xorY = new CreateTextFieldXorY();
-            xorY.setVisible(true);
+
         }
     };
 }

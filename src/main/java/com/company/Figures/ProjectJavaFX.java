@@ -16,8 +16,11 @@ import javafx.stage.Stage;
 import javafx.event.*;
 import javafx.geometry.*;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProjectJavaFX extends Application {
     public ArrayList<Figure> figures;
@@ -45,8 +48,7 @@ public class ProjectJavaFX extends Application {
         }
         return root;
     }
-    @Override
-    public void start(Stage stage) throws Exception {
+    public void writeObjectFigure() {
         Point p1 = new Point(100, 100);
         Point p2 = new Point(200, 200);
         Point p3 = new Point(300, 200);
@@ -72,6 +74,37 @@ public class ProjectJavaFX extends Application {
         figures.add(creator.createFigure(Arrays.asList(p4, p5, p6, p7)));
         figures.add(creator.createFigure(Arrays.asList(p8, p9, p10, p11, p12)));
 
+        try (FileOutputStream fos = new FileOutputStream("ProjectFXFile");
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            for (int i = 0; i < figures.size(); i++) {
+                oos.writeObject(figures.get(i));
+            }
+
+        } catch (IOException ex) {
+            System.out.println("Exception");
+        }
+    }
+
+    public ArrayList<Figure> readObjectFigure() {
+        ArrayList<Figure> figures = new ArrayList<>();
+        try (FileInputStream fis = new FileInputStream("ProjectFXFile");
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            Object str;
+            while ((str = ois.readObject()) != null) {
+                figures.add((Figure) str);
+            }
+        } catch (IOException ex) {
+            System.out.println("Exception");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+       return figures;
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+//        writeObjectFigure();
+//        readObjectFigure();
         stage.setTitle("My project JavaFX");
         stage.setWidth(1400);
         stage.setHeight(900);
@@ -91,6 +124,12 @@ public class ProjectJavaFX extends Application {
                 Button btnCreateNangle = new Button("СОЗДАТЬ МНОГОУГОЛЬНИК");
                 Button btnComeback = new Button("НАЗАД");
 
+//                HashMap<Button, Figure> buttonAndFigures = new HashMap<>();
+//                buttonAndFigures.put(btnCreateCircle, new com.company.Figures.Circle());
+//                buttonAndFigures.put(btnCreateTriangle, new com.company.Figures.Triangle());
+//                buttonAndFigures.put(btnCreateRectangle, new com.company.Figures.Rectangle());
+//                buttonAndFigures.put(btnCreateNangle, new com.company.Figures.NAngle());
+
                 Scene mySceneCreate = new Scene(rootCreate);
                 rootCreate.getChildren().addAll(btnCreateCircle,btnCreateTriangle,btnCreateRectangle,btnCreateNangle, btnComeback);
                 stage.setScene(mySceneCreate);
@@ -103,8 +142,7 @@ public class ProjectJavaFX extends Application {
                             Text writeY = new Text("введите y:");
                             TextField tfWriteX = new TextField();
                             TextField tfWriteY = new TextField();
-                            Button btnAddX = new Button("ДОБАВИТЬ X");
-                            Button btnAddY = new Button("ДОБАВИТЬ Y");
+                            Button btnAdd = new Button("ДОБАВИТЬ");
                             Button btnSave = new Button("СОХРАНИТЬ");
                             GridPane gridPane = new GridPane();
                             gridPane.setMinSize(400, 200);
@@ -115,12 +153,12 @@ public class ProjectJavaFX extends Application {
                             gridPane.add(writeY, 1, 0);
                             gridPane.add(tfWriteX, 0, 1);
                             gridPane.add(tfWriteY, 1, 1);
-                            gridPane.add(btnAddX, 0, 2);
-                            gridPane.add(btnAddY, 1, 2);
+                            gridPane.add(btnAdd, 0, 2);
                             gridPane.add(btnSave, 2, 2);
-
                             Scene gridScene = new Scene(gridPane);
                             stage.setScene(gridScene);
+//                            figures = readObjectFigure();
+//
 //                            Scene scenePaint = new Scene(paint(figures));
 //                            stage.setScene(scenePaint);
                         }

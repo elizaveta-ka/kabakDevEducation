@@ -6,28 +6,39 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.event.*;
 import javafx.geometry.*;
+import lombok.SneakyThrows;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class ProjectJavaFX extends Application {
-    public ArrayList<Figure> figures;
+    private ArrayList<Figure> figures;
+    private ArrayList<Point> points;
+
+    public ArrayList<Figure> getFigures() {
+        return figures;
+    }
+
+    public ArrayList<Point> getPoints() {
+        return points;
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
+
     public Group paint(ArrayList<Figure> figures){
         Group root = new Group();
         Line line;
@@ -46,35 +57,12 @@ public class ProjectJavaFX extends Application {
                 }
             }
         }
+//        writeObjectFigure(figures);
         return root;
     }
-    public void writeObjectFigure() {
-        Point p1 = new Point(100, 100);
-        Point p2 = new Point(200, 200);
-        Point p3 = new Point(300, 200);
 
-        Point p4 = new Point(400, 200);
-        Point p5 = new Point(400, 400);
-        Point p6 = new Point(500, 400);
-        Point p7 = new Point(500, 200);
-
-        Point p8 = new Point(600, 200);
-        Point p9 = new Point(600, 400);
-        Point p10 = new Point(700, 500);
-        Point p11 = new Point(800, 400);
-        Point p12 = new Point(800, 200);
-
-        Point p13 = new Point(200, 400);
-        Point p14 = new Point(200, 300);
-
-        ArrayList<Figure> figures = new ArrayList<>();
-        FigureCreator creator = new FigureCreator();
-        figures.add(creator.createFigure(Arrays.asList(p13, p14)));
-        figures.add(creator.createFigure(Arrays.asList(p1, p2, p3)));
-        figures.add(creator.createFigure(Arrays.asList(p4, p5, p6, p7)));
-        figures.add(creator.createFigure(Arrays.asList(p8, p9, p10, p11, p12)));
-
-        try (FileOutputStream fos = new FileOutputStream("ProjectFXFile");
+    public void writeObjectFigure(ArrayList<Figure> figures) {
+        try (FileOutputStream fos = new FileOutputStream("ProjectFXFile",true);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             for (int i = 0; i < figures.size(); i++) {
                 oos.writeObject(figures.get(i));
@@ -98,85 +86,166 @@ public class ProjectJavaFX extends Application {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+        for (Figure fig:figures) {
+            System.out.println(fig);
+        }
        return figures;
     }
 
+    public static void writeToFile(String str) throws IOException {
+        File file = new File("testFileFX");
+       try(FileWriter fr = new FileWriter(file);
+        BufferedWriter bw = new BufferedWriter(fr)) {
+           bw.write(str);
+       }
+    }
+
+    public ArrayList<Point> readToFile() throws IOException {
+        File file = new File("testFileFX");
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String str;
+        ArrayList<Point> pointsList = new ArrayList<>();
+        while ((str = br.readLine()) != null) {
+            String[] coordinates = str.split(";");
+            double x = Double.parseDouble(coordinates[0].trim());
+            double y = Double.parseDouble(coordinates[1].trim());
+            Point pointNew = new Point(x, y);
+            pointsList.add(pointNew);
+        }
+        return pointsList;
+    }
+
     @Override
-    public void start(Stage stage) throws Exception {
-//        writeObjectFigure();
-//        readObjectFigure();
+    public void start(Stage stage) {
         stage.setTitle("My project JavaFX");
         stage.setWidth(1400);
         stage.setHeight(900);
+        BorderPane mainPane = new BorderPane();
         FlowPane rootNode = new FlowPane(Orientation.VERTICAL,20,20);
 
         Button buttonCreateFigure = new Button("СОЗДАТЬ ФИГУРУ");
         Button buttonChangeFigure = new Button("ИЗМЕНИТЬ ФИГУРУ");
         Button buttonDeleteFigure = new Button("УДАЛИТЬ ФИГУРУ");
+        Button buttonShowAllFigures = new Button("ВЫВЕСТИ ВСЕ ФИГУРЫ");
+        TextArea text = new TextArea();
 
-        buttonCreateFigure.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                FlowPane rootCreate = new FlowPane(Orientation.VERTICAL,20,20);
-                Button btnCreateCircle = new Button("СОЗДАТЬ КРУГ");
-                Button btnCreateTriangle = new Button("СОЗДАТЬ ТРЕУГОЛЬНИК");
-                Button btnCreateRectangle = new Button("СОЗДАТЬ ЧЕТЫРЕХУГОЛЬНИК");
-                Button btnCreateNangle = new Button("СОЗДАТЬ МНОГОУГОЛЬНИК");
-                Button btnComeback = new Button("НАЗАД");
+        GridPane gridPane = new GridPane();
+        Text writeX = new Text("введите x:");
+        Text writeY = new Text("введите y:");
+        TextField tfWriteX = new TextField();
+        TextField tfWriteY = new TextField();
+        Button btnAdd = new Button("ДОБАВИТЬ");
+        Button btnDelete = new Button("УДАЛИТЬ");
+        Button btnSave = new Button("СОХРАНИТЬ");
+        gridPane.setMinSize(70, 200);
+        gridPane.setVgap(5);
+        gridPane.setHgap(5);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.add(writeX, 1, 0);
+        gridPane.add(tfWriteX, 1, 2);
+        gridPane.add(writeY, 1, 3);
+        gridPane.add(tfWriteY, 1, 4);
+        gridPane.add(btnAdd, 1, 5);
+        gridPane.add(btnDelete,1,6);
+        gridPane.add(btnSave, 1, 7);
 
-//                HashMap<Button, Figure> buttonAndFigures = new HashMap<>();
-//                buttonAndFigures.put(btnCreateCircle, new com.company.Figures.Circle());
-//                buttonAndFigures.put(btnCreateTriangle, new com.company.Figures.Triangle());
-//                buttonAndFigures.put(btnCreateRectangle, new com.company.Figures.Rectangle());
-//                buttonAndFigures.put(btnCreateNangle, new com.company.Figures.NAngle());
+        FlowPane rootChange = new FlowPane(Orientation.VERTICAL, 20, 20);
+        Button btnMove = new Button("ПЕРЕМЕСТИТЬ ФИГУРУ");
+        Button btnScale = new Button("ИЗМЕНИТЬ РАЗМЕР ФИГУРЫ");
+        Button btnRotate = new Button("ВРАЩАТЬ ФИГУРУ");
+        Text textMove = new Text("Задайте координаты перемещения фигуры");
+        Text textMoveX = new Text("по X");
+        Text textMoveY = new Text("по Y");
+        TextField tfMoveX = new TextField();
+        TextField tfMoveY = new TextField();
+        Button btnOk1 = new Button("OK");
 
-                Scene mySceneCreate = new Scene(rootCreate);
-                rootCreate.getChildren().addAll(btnCreateCircle,btnCreateTriangle,btnCreateRectangle,btnCreateNangle, btnComeback);
-                stage.setScene(mySceneCreate);
-                ArrayList<Button> myEventList = new ArrayList<>(Arrays.asList(btnCreateCircle,btnCreateTriangle,btnCreateRectangle,btnCreateNangle));
-                for (var listEv:myEventList) {
-                    listEv.setOnAction(new EventHandler<ActionEvent>() {
+        Text textScale = new Text("Во сколько раз увеличить фигуру?");
+        TextField tfScale = new TextField();
+        Button btnOk2 = new Button("OK");
+
+        Text textRotate = new Text("Задайте угол вращения фигуры");
+        TextField tfRotate = new TextField();
+        Button btnOk3 = new Button("OK");
+        rootChange.getChildren().addAll(btnMove,textMove,textMoveX,tfMoveX,textMoveY,tfMoveY,btnOk1,btnScale,textScale,tfScale,btnOk2,btnRotate,textRotate,tfRotate,btnOk3);
+//        Group group = paint(readObjectFigure());
+        mainPane.setLeft(rootNode);
+        mainPane.setRight(gridPane);
+        mainPane.setRight(rootChange);
+//        mainPane.setCenter(paint(readObjectFigure()));
+        gridPane.setVisible(false);
+        rootChange.setVisible(false);
+
+        ArrayList<Figure> figures = new ArrayList<>();
+                    buttonCreateFigure.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
-                            Text writeX = new Text("введите x:");
-                            Text writeY = new Text("введите y:");
-                            TextField tfWriteX = new TextField();
-                            TextField tfWriteY = new TextField();
-                            Button btnAdd = new Button("ДОБАВИТЬ");
-                            Button btnSave = new Button("СОХРАНИТЬ");
-                            GridPane gridPane = new GridPane();
-                            gridPane.setMinSize(400, 200);
-                            gridPane.setVgap(5);
-                            gridPane.setHgap(5);
-                            gridPane.setAlignment(Pos.CENTER);
-                            gridPane.add(writeX, 0, 0);
-                            gridPane.add(writeY, 1, 0);
-                            gridPane.add(tfWriteX, 0, 1);
-                            gridPane.add(tfWriteY, 1, 1);
-                            gridPane.add(btnAdd, 0, 2);
-                            gridPane.add(btnSave, 2, 2);
-                            Scene gridScene = new Scene(gridPane);
-                            stage.setScene(gridScene);
-//                            figures = readObjectFigure();
-//
-//                            Scene scenePaint = new Scene(paint(figures));
-//                            stage.setScene(scenePaint);
+//                                group.setVisible(true);
+                                gridPane.setVisible(true);
+                                mainPane.setRight(gridPane);
+                                stage.show();
+
+                            ArrayList<Point> points = new ArrayList<>();
+                                    btnAdd.setOnAction(new EventHandler<ActionEvent>() {
+                                        @Override
+                                        public void handle(ActionEvent event) {
+                                            String readX = tfWriteX.getText();
+                                            String readY = tfWriteY.getText();
+                                            text.appendText(readX + ";" + readY + "\n");
+                                            tfWriteX.clear();
+                                            tfWriteY.clear();
+                                            String str = text.getText();
+                                            try {
+                                                writeToFile(str);
+                                            } catch (IOException e) {
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                    });
+
+                            btnSave.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent event) {
+                                    text.clear();
+//                                    group.setVisible(true);
+//                                    System.out.println("SAVE");
+//                                    System.out.println(text.getText());
+                                    FigureCreator creator = new FigureCreator();
+//                                    ArrayList<Figure> figures = new ArrayList<>();
+                                    try {
+                                        figures.add(creator.createFigure(readToFile()));
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                    writeObjectFigure(figures);
+                                    mainPane.setCenter(paint(figures));
+//                                    paint(readObjectFigure());
+                                }
+                            });
                         }
                     });
-                }
-            }
-        });
         buttonChangeFigure.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                FlowPane rootChange = new FlowPane(Orientation.VERTICAL, 20, 20);
-                Button btnMove = new Button("ПЕРЕМЕСТИТЬ ФИГУРУ");
-                Button btnScale = new Button("ИЗМЕНИТЬ РАЗМЕР ФИГУРЫ");
-                Button btnRotate = new Button("ВРАЩАТЬ ФИГУРУ");
-                Button btnComeback = new Button("НАЗАД");
-                rootChange.getChildren().addAll(btnMove, btnScale, btnRotate, btnComeback);
-                Scene myScaneChange = new Scene(rootChange);
-                stage.setScene(myScaneChange);
+                mainPane.setCenter(paint(readObjectFigure()));
+                paint(readObjectFigure());
+//                group.setVisible(true);
+//                mainPane.setCenter(paint(readObjectFigure()));
+//                paint(readObjectFigure());
+//                mainPane.setCenter(paint(readObjectFigure()));
+
+                rootChange.setVisible(true);
+                mainPane.setRight(rootChange);
+                stage.show();
+                        btnOk2.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                textScale.setText(tfScale.getText());
+//                                paint(readObjectFigure());
+
+                            }
+                        });
             }
         });
         buttonDeleteFigure.setOnAction(new EventHandler<ActionEvent>() {
@@ -184,12 +253,21 @@ public class ProjectJavaFX extends Application {
             public void handle(ActionEvent event) {
                 Label myLabelDelete = new Label("Выберите фигуру, которую хотите удалить");
                 rootNode.getChildren().add(myLabelDelete);
+//                mainPane.setCenter(stackPane);
+//                group.setVisible(true);
+//                mainPane.setCenter(paint(readObjectFigure()));
+                paint(readObjectFigure());
             }
         });
 
-
-        Scene myScene = new Scene(rootNode);
-        rootNode.getChildren().addAll(buttonCreateFigure,buttonChangeFigure,buttonDeleteFigure);
+        buttonShowAllFigures.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                paint(readObjectFigure());
+            }
+        });
+        Scene myScene = new Scene(mainPane);
+        rootNode.getChildren().addAll(buttonCreateFigure,text,buttonChangeFigure,buttonDeleteFigure, buttonShowAllFigures);
         stage.setScene(myScene);
         stage.show();
     }

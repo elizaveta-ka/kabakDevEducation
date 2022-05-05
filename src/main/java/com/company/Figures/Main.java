@@ -165,31 +165,28 @@ public class Main {
 //    }
         //JPANEL
 
-//        Point p1 = new Point(100, 100);
-//        Point p2 = new Point(200, 200);
-//        Point p3 = new Point(300, 200);
-//
-//        Point p4 = new Point(400, 200);
-//        Point p5 = new Point(400, 400);
-//        Point p6 = new Point(500, 400);
-//        Point p7 = new Point(500, 200);
-//
-//        Point p8 = new Point(600, 200);
-//        Point p9 = new Point(600, 400);
-//        Point p10 = new Point(700, 500);
-//        Point p11 = new Point(800, 400);
-//        Point p12 = new Point(800, 200);
-//
-//        Point p13 = new Point(100, 400);
-//        Point p14 = new Point(200, 300);
-//
-//
-//        ArrayList<Figure> figures = new ArrayList<>();
-//        FigureCreator creator = new FigureCreator();
-//        figures.add(creator.createFigure(Arrays.asList(p13, p14)));
-//        figures.add(creator.createFigure(Arrays.asList(p1, p2, p3)));
-//        figures.add(creator.createFigure(Arrays.asList(p4, p5, p6, p7)));
-//        figures.add(creator.createFigure(Arrays.asList(p8, p9, p10, p11, p12)));
+//       Point p1 = new Point(100, 100);
+////        Point p2 = new Point(200, 200);
+////        Point p3 = new Point(300, 200);
+////
+////        Point p4 = new Point(400, 200);
+////        Point p5 = new Point(400, 400);
+////        Point p6 = new Point(500, 400);
+////        Point p7 = new Point(500, 200);
+////
+////        Point p8 = new Point(600, 200);
+////        Point p9 = new Point(600, 400);
+////        Point p10 = new Point(700, 500);
+////        Point p11 = new Point(800, 400);
+////        Point p12 = new Point(800, 200);
+////
+////        Point p13 = new Point(200, 400);
+////        Point p14 = new Point(200, 300);
+////        FigureCreator creator = new FigureCreator();
+////        figures.add(creator.createFigure(Arrays.asList(p13, p14)));
+////        figures.add(creator.createFigure(Arrays.asList(p1, p2, p3)));
+////        figures.add(creator.createFigure(Arrays.asList(p4, p5, p6, p7)));
+////        figures.add(creator.createFigure(Arrays.asList(p8, p9, p10, p11, p12)));reateFigure(Arrays.asList(p8, p9, p10, p11, p12)));
 //
 //        JPanelExample jPanelExample = new JPanelExample(figures);
 //        JFrame frame = new JFrame();

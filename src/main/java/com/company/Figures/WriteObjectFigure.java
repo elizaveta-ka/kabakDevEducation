@@ -29,12 +29,11 @@ public class WriteObjectFigure {
 //        } catch (IOException ex) {
 //            System.out.println("Exception");
 //        }
-        try (FileOutputStream fos = new FileOutputStream("figuresArray.bin");
+        try (FileOutputStream fos = new FileOutputStream("figuresArray.bin",true);
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
             for (int i = 0; i < figures.size(); i++) {
                 oos.writeObject(figures.get(i));
             }
-
         } catch (IOException ex) {
             System.out.println("Exception");
         }

@@ -62,11 +62,12 @@ public class ProjectJavaFX extends Application {
     }
 
     public void writeObjectFigure(ArrayList<Figure> figures) {
-        try (FileOutputStream fos = new FileOutputStream("ProjectFXFile",true);
+        try (FileOutputStream fos = new FileOutputStream("ProjectFXFile");
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            for (int i = 0; i < figures.size(); i++) {
-                oos.writeObject(figures.get(i));
-            }
+//            for (int i = 0; i < figures.size(); i++) {
+//                oos.writeObject(figures.get(i));
+//            }
+            oos.writeObject(figures);
 
         } catch (IOException ex) {
             System.out.println("Exception");
@@ -75,19 +76,27 @@ public class ProjectJavaFX extends Application {
 
     public ArrayList<Figure> readObjectFigure() {
         ArrayList<Figure> figures = new ArrayList<>();
-        try (FileInputStream fis = new FileInputStream("ProjectFXFile");
+//        try (FileInputStream fis = new FileInputStream("ProjectFXFile");
+//             ObjectInputStream ois = new ObjectInputStream(fis)) {
+//            Object str;
+//            while ((str = ois.readObject()) != null) {
+//                figures.add((Figure) str);
+//            }
+//        } catch (IOException ex) {
+//            System.out.println("Exception");
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        for (Figure fig:figures) {
+//            System.out.println(fig);
+//        }
+                try (FileInputStream fis = new FileInputStream("ProjectFXFile");
              ObjectInputStream ois = new ObjectInputStream(fis)) {
-            Object str;
-            while ((str = ois.readObject()) != null) {
-                figures.add((Figure) str);
-            }
+            figures = (ArrayList<Figure>) ois.readObject();
         } catch (IOException ex) {
             System.out.println("Exception");
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-        }
-        for (Figure fig:figures) {
-            System.out.println(fig);
         }
        return figures;
     }
@@ -182,6 +191,7 @@ public class ProjectJavaFX extends Application {
                         @Override
                         public void handle(ActionEvent event) {
 //                                group.setVisible(true);
+                            mainPane.setCenter(paint(readObjectFigure()));
                                 gridPane.setVisible(true);
                                 mainPane.setRight(gridPane);
                                 stage.show();
@@ -219,7 +229,7 @@ public class ProjectJavaFX extends Application {
                                         e.printStackTrace();
                                     }
                                     writeObjectFigure(figures);
-                                    mainPane.setCenter(paint(figures));
+                                    mainPane.setCenter(paint(readObjectFigure()));
 //                                    paint(readObjectFigure());
                                 }
                             });
@@ -256,13 +266,16 @@ public class ProjectJavaFX extends Application {
 //                mainPane.setCenter(stackPane);
 //                group.setVisible(true);
 //                mainPane.setCenter(paint(readObjectFigure()));
+                mainPane.setCenter(paint(readObjectFigure()));
                 paint(readObjectFigure());
+
             }
         });
 
         buttonShowAllFigures.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                mainPane.setCenter(paint(readObjectFigure()));
                 paint(readObjectFigure());
             }
         });

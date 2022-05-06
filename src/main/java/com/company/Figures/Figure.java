@@ -75,27 +75,32 @@ public abstract class Figure implements Serializable {
     }
 
     protected void rotate(double angle) {
-        angle += Math.PI / 180;
+        angle *= Math.PI / 180;
         for (int i = 0; i < points.size(); i++) {
-            points.get(i).setX((points.get(i).getX() - getCenterFigure().getX() * Math.cos(angle)) - (points.get(i).getY() - getCenterFigure().getY() * Math.sin(angle)));
-            points.get(i).setX((points.get(i).getX() - getCenterFigure().getX() * Math.sin(angle)) - (points.get(i).getY() - getCenterFigure().getY() * Math.cos(angle)));
+            points.get(i).setX(((points.get(i).getX() - getCenterFigure().getX()) * Math.cos(angle) - (points.get(i).getY() - getCenterFigure().getY()) * Math.sin(angle)) + getCenterFigure().getX());
+            points.get(i).setY(((points.get(i).getY() - getCenterFigure().getY()) * Math.cos(angle) - (points.get(i).getY() - getCenterFigure().getY()) * Math.sin(angle)) + getCenterFigure().getY());
         }
     }
 
-    protected void move(int a, int b) {
+    protected void move(double a, double b) {
         for (int i = 0; i < points.size(); i++) {
             points.get(i).setX(points.get(i).getX() + a);
             points.get(i).setY(points.get(i).getY() + b);
-            this.getPerimeter(); //пересчитывает периметр и площадь
-            this.getArea();
         }
     }
 
-    protected void scale(int num) {
-        for (int i = 0; i < points.size(); i++) {
-            points.get(i).setX(((points.get(i).getX() - getCenterFigure().getX())* num) + getCenterFigure().getX());
-            points.get(i).setY(((points.get(i).getY() - getCenterFigure().getY())* num) + getCenterFigure().getY());
+    protected void scale(double num) {
+        if(points.size() == 2) {
+            points.get(1).setX(((points.get(1).getX() - points.get(0).getX())* num) + points.get(0).getX());
+            points.get(1).setY(((points.get(1).getY() - points.get(0).getY())* num) + points.get(0).getY());
+        } else {
+            for (int i = 0; i < points.size(); i++) {
+                points.get(i).setX(((points.get(i).getX() - getCenterFigure().getX()) * num) + getCenterFigure().getX());
+                points.get(i).setY(((points.get(i).getY() - getCenterFigure().getY()) * num) + getCenterFigure().getY());
+            }
         }
+        this.getPerimeter(); //пересчитывает периметр и площадь
+        this.getArea();
     }
 
     protected static Point getCenterTriangle(Point a, Point b, Point c) {
@@ -110,24 +115,35 @@ public abstract class Figure implements Serializable {
         return new Point(x, y);
     }
 
+//    protected Point getCenterFigure() {
+//        ArrayList<Point> tmp = new ArrayList<>(this.points);
+//        ArrayList<Point> centers = new ArrayList<>();
+//            do {
+//                centers.clear();
+//                for (int i = 1; i < tmp.size() - 1; i++) {
+//                    centers.add(getCenterTriangle(tmp.get(0), tmp.get(i), tmp.get(i + 1)));
+//                }
+//                tmp.clear();
+//                tmp.addAll(centers);
+//            } while (points.size() % 2 == 0 ? centers.size() != 2 : centers.size() != 3);
+//
+//            if (points.size() % 2 == 0) {
+//                return getCenterLineSegment(centers.get(0), centers.get(1));
+//            } else {
+//                return getCenterTriangle(centers.get(0), centers.get(1), centers.get(2));
+//            }
+//    }
     protected Point getCenterFigure() {
-        ArrayList<Point> tmp = new ArrayList<>(points);
-        ArrayList<Point> centers = new ArrayList<>();
-        do {
-            centers.clear();
-            for (int i = 1; i < tmp.size() - 1; i++) {
-                centers.add(getCenterTriangle(tmp.get(0), tmp.get(i), tmp.get(i + 1)));
-            }
-            tmp.clear();
-            tmp.addAll(centers);
-        } while (points.size() % 2 == 0 ? centers.size() != 2 : centers.size() != 3);
-
-        if (points.size() % 2 == 0) {
-            return getCenterLineSegment(centers.get(0), centers.get(1));
-        } else {
-            return getCenterTriangle(centers.get(0), centers.get(1), centers.get(2));
-        }
-    }
+        double x = 0;
+        double y = 0;
+            for (int i = 0; i < points.size(); i++) {
+                x += points.get(i).getX();
+                y += points.get(i).getY();
+                 }
+            x /= points.size();
+            y/= points.size();
+        return new Point(x,y);
+}
 
         protected void sortPoints() {
 //        ArrayList<Point> sortPoints = new ArrayList<>(points.size());

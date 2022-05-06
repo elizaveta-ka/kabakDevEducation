@@ -4,10 +4,8 @@ import com.company.Figures.CreateFigures.FigureCreator;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -26,6 +24,13 @@ import java.util.ArrayList;
 public class ProjectJavaFX extends Application {
     private ArrayList<Figure> figures;
     private ArrayList<Point> points;
+    final ColorPicker color1 = new ColorPicker(Color.WHITE);
+    final ColorPicker color2 = new ColorPicker(Color.AQUA);
+    final ColorPicker color3 = new ColorPicker(Color.BLACK);
+    final double mainCenterX = 430;
+    final double mainCenterY = 440;
+
+    AnchorPane anch = new AnchorPane(); //NEW
 
     public ArrayList<Figure> getFigures() {
         return figures;
@@ -39,34 +44,52 @@ public class ProjectJavaFX extends Application {
         launch(args);
     }
 
-    public Group paint(ArrayList<Figure> figures){
-        Group root = new Group();
-        Line line;
-        Circle circle;
-        for (var f:figures) {
-            if (f.getPoints().size() == 2) {
-                circle = new Circle((int) f.getPoints().get(0).getX(), (int) f.getPoints().get(0).getY(), (int) f.getRadius());
-                root.getChildren().add(circle);
-            } else {
-                for (int i = 0; i < f.getPoints().size(); i++) {
-                    Point value1 = f.getPoints().get(i);
-                    int temp = i + 1 < f.getPoints().size() ? i + 1 : 0;
-                    Point value2 = f.getPoints().get(temp);
-                    line = new Line((int) value1.getX(), (int) value1.getY(), (int) value2.getX(), (int) value2.getY());
-                    root.getChildren().add(line);
-                }
+    public void paint(ArrayList<Figure> figures){
+    Line line;
+    Circle circle;
+    for (var f:figures) {
+        if (f.getPoints().size() == 2) {
+            circle = new Circle((int) f.getPoints().get(0).getX(), (int) f.getPoints().get(0).getY(), (int) f.getRadius());
+            anch.getChildren().add(circle);
+        } else {
+            for (int i = 0; i < f.getPoints().size(); i++) {
+                Point value1 = f.getPoints().get(i);
+                int temp = i + 1 < f.getPoints().size() ? i + 1 : 0;
+                Point value2 = f.getPoints().get(temp);
+                line = new Line((int) value1.getX(), (int) value1.getY(), (int) value2.getX(), (int) value2.getY());
+                anch.getChildren().add(line);
             }
         }
-//        writeObjectFigure(figures);
-        return root;
     }
+}
+
+    public void repaintMove(ArrayList<Figure> figures, ArrayList<Point> points){
+        for (var f:figures) {
+                for (int i = 0; i < f.getPoints().size(); i++) {
+                    f.move(points.get(0).getX(),points.get(0).getY());
+            }
+        }
+        writeObjectFigure(figures);
+    }
+
+    public void repaintScale(ArrayList<Figure> figures, double num) {
+        for (var f:figures) {
+                f.scale(num);
+        }
+        writeObjectFigure(figures);
+    }
+
+    public void repaintRotate(ArrayList<Figure> figures, double angle) {
+        for (var f:figures) {
+                f.rotate(angle);
+        }
+        writeObjectFigure(figures);
+    }
+
 
     public void writeObjectFigure(ArrayList<Figure> figures) {
         try (FileOutputStream fos = new FileOutputStream("ProjectFXFile");
              ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-//            for (int i = 0; i < figures.size(); i++) {
-//                oos.writeObject(figures.get(i));
-//            }
             oos.writeObject(figures);
 
         } catch (IOException ex) {
@@ -76,20 +99,6 @@ public class ProjectJavaFX extends Application {
 
     public ArrayList<Figure> readObjectFigure() {
         ArrayList<Figure> figures = new ArrayList<>();
-//        try (FileInputStream fis = new FileInputStream("ProjectFXFile");
-//             ObjectInputStream ois = new ObjectInputStream(fis)) {
-//            Object str;
-//            while ((str = ois.readObject()) != null) {
-//                figures.add((Figure) str);
-//            }
-//        } catch (IOException ex) {
-//            System.out.println("Exception");
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//        for (Figure fig:figures) {
-//            System.out.println(fig);
-//        }
                 try (FileInputStream fis = new FileInputStream("ProjectFXFile");
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             figures = (ArrayList<Figure>) ois.readObject();
@@ -109,6 +118,19 @@ public class ProjectJavaFX extends Application {
        }
     }
 
+    public double readToFileForScale() throws IOException {
+        double num = 0;
+        File file = new File("testFileFX");
+        FileReader fr = new FileReader(file);
+        BufferedReader br = new BufferedReader(fr);
+        String str;
+        while((str = br.readLine()) != null) {
+            num = Double.parseDouble(str);
+        }
+
+        return num;
+    }
+
     public ArrayList<Point> readToFile() throws IOException {
         File file = new File("testFileFX");
         FileReader fr = new FileReader(file);
@@ -125,6 +147,7 @@ public class ProjectJavaFX extends Application {
         return pointsList;
     }
 
+
     @Override
     public void start(Stage stage) {
         stage.setTitle("My project JavaFX");
@@ -138,6 +161,8 @@ public class ProjectJavaFX extends Application {
         Button buttonDeleteFigure = new Button("УДАЛИТЬ ФИГУРУ");
         Button buttonShowAllFigures = new Button("ВЫВЕСТИ ВСЕ ФИГУРЫ");
         TextArea text = new TextArea();
+        text.setPrefSize(15,300);
+
 
         GridPane gridPane = new GridPane();
         Text writeX = new Text("введите x:");
@@ -178,20 +203,50 @@ public class ProjectJavaFX extends Application {
         TextField tfRotate = new TextField();
         Button btnOk3 = new Button("OK");
         rootChange.getChildren().addAll(btnMove,textMove,textMoveX,tfMoveX,textMoveY,tfMoveY,btnOk1,btnScale,textScale,tfScale,btnOk2,btnRotate,textRotate,tfRotate,btnOk3);
-//        Group group = paint(readObjectFigure());
+
         mainPane.setLeft(rootNode);
         mainPane.setRight(gridPane);
         mainPane.setRight(rootChange);
-//        mainPane.setCenter(paint(readObjectFigure()));
+
         gridPane.setVisible(false);
         rootChange.setVisible(false);
+        //new
+        mainPane.setCenter(anch);
+        Line line1 = new Line(430,0,430,900);
+        Line line2 = new Line(0,440,430,440);
+        anch.getChildren().addAll(line1,line2);
+        anch.setBorder(Border.stroke(color3.getValue()));
+//
+//        NumberAxis numberAxis = new NumberAxis();
+//        //как сделать по середине ?
+//        anch.getChildren().add(numberAxis);
+
+//        scene.addEventFilter(MouseEvent.MOUSE_PRESSED, new EventHandler<MouseEvent>() {
+//            @Override
+//            public void handle(MouseEvent mouseEvent) {
+//                System.out.println("mouse click detected! " + mouseEvent.getSource());
+//            }
+//        });
+
+        EventHandler<MouseEvent> mouseEvent = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println("clicked" + event.getX() + " " +  event.getY());
+                System.out.println(mainPane.getCenter().getLayoutX());
+//                anch.getChildren().equals(event.getEventType());
+                 // удалить конкретную фигуру
+                // перезаписать в файл
+            }
+        };
+
 
         ArrayList<Figure> figures = new ArrayList<>();
                     buttonCreateFigure.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
+                            paint(readObjectFigure());
 //                                group.setVisible(true);
-                            mainPane.setCenter(paint(readObjectFigure()));
+//                            mainPane.setCenter(paint(readObjectFigure())); //anchorPane = paint(readObject)
                                 gridPane.setVisible(true);
                                 mainPane.setRight(gridPane);
                                 stage.show();
@@ -217,6 +272,7 @@ public class ProjectJavaFX extends Application {
                             btnSave.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
+                                    paint(readObjectFigure());
                                     text.clear();
 //                                    group.setVisible(true);
 //                                    System.out.println("SAVE");
@@ -229,7 +285,9 @@ public class ProjectJavaFX extends Application {
                                         e.printStackTrace();
                                     }
                                     writeObjectFigure(figures);
-                                    mainPane.setCenter(paint(readObjectFigure()));
+                                    paint(readObjectFigure());
+//                                    mainPane.setCenter(paint(readObjectFigure()));
+                                    //anchorPane = paint(readObject)
 //                                    paint(readObjectFigure());
                                 }
                             });
@@ -238,22 +296,84 @@ public class ProjectJavaFX extends Application {
         buttonChangeFigure.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                mainPane.setCenter(paint(readObjectFigure()));
+//                mainPane.setCenter(paint(readObjectFigure()));
                 paint(readObjectFigure());
 //                group.setVisible(true);
 //                mainPane.setCenter(paint(readObjectFigure()));
 //                paint(readObjectFigure());
 //                mainPane.setCenter(paint(readObjectFigure()));
-
                 rootChange.setVisible(true);
                 mainPane.setRight(rootChange);
                 stage.show();
+                btnOk1.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String moveX = tfMoveX.getText();
+                        String moveY = tfMoveY.getText();
+                        text.setText(moveX + ";" + moveY);
+                        try {
+                            writeToFile(text.getText());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        btnMove.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                anch.getChildren().clear();
+                                try {
+                                    repaintMove(readObjectFigure(),readToFile());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                paint(readObjectFigure());
+                            }
+                        });
+                    }
+                });
                         btnOk2.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                textScale.setText(tfScale.getText());
-//                                paint(readObjectFigure());
-
+                                text.setText(tfScale.getText());
+                                try {
+                                    writeToFile(text.getText());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                btnScale.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        anch.getChildren().clear();
+                                        try {
+                                            repaintScale(readObjectFigure(),readToFileForScale());
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        paint(readObjectFigure());
+                                    }
+                                });
+                            }
+                        });
+                        btnOk3.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                text.setText(tfRotate.getText());
+                                try {
+                                    writeToFile(text.getText());
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                btnRotate.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent event) {
+                                        anch.getChildren().clear();
+                                        try {
+                                            repaintRotate(readObjectFigure(),readToFileForScale());
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                        paint(readObjectFigure());
+                                    }
+                                });
                             }
                         });
             }
@@ -263,10 +383,20 @@ public class ProjectJavaFX extends Application {
             public void handle(ActionEvent event) {
                 Label myLabelDelete = new Label("Выберите фигуру, которую хотите удалить");
                 rootNode.getChildren().add(myLabelDelete);
+                gridPane.setVisible(false);
+                rootChange.setVisible(false);
+
+                paint(readObjectFigure());
+
+                anch.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+
+
+
 //                mainPane.setCenter(stackPane);
 //                group.setVisible(true);
 //                mainPane.setCenter(paint(readObjectFigure()));
-                mainPane.setCenter(paint(readObjectFigure()));
+//                mainPane.setCenter(paint(readObjectFigure()));
+                //anchorPane = paint(readObject)
                 paint(readObjectFigure());
 
             }
@@ -275,8 +405,11 @@ public class ProjectJavaFX extends Application {
         buttonShowAllFigures.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                mainPane.setCenter(paint(readObjectFigure()));
+//                mainPane.setCenter(paint(readObjectFigure()));
+                //anchorPane = paint(readObject)
                 paint(readObjectFigure());
+                gridPane.setVisible(false);
+                rootChange.setVisible(false);
             }
         });
         Scene myScene = new Scene(mainPane);

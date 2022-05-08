@@ -26,4 +26,21 @@ public class Circle extends Figure {
         double area = Math.PI * Math.pow(getRadius(), 2);
         return area;
     }
+    public void rotate(double angle) {
+        System.out.println("");
+    }
+
+    public Point getCenterFigure() {
+        double x = points.get(0).getX();
+        double y = points.get(0).getY();
+        return new Point(x,y);
+    }
+
+    @Override
+    public boolean containPoint(double x, double y) {
+        this.getCenterFigure();
+        double distance = Math.sqrt((Math.pow(x - this.getCenterFigure().getX(), 2))
+                + Math.pow(y - this.getCenterFigure().getY(), 2));
+        return (Math.abs(distance) <= radius);
+    }
 }

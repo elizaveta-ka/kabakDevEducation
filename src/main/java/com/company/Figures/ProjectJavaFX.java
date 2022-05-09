@@ -106,12 +106,14 @@ public class ProjectJavaFX extends Application {
         }
         return null;
     }
-    public static double getNewCentrX (double n) {
-        return n * mainCenterX/ 50;
+    public static double getNewCenterX (double n) {
+        double number = n * 50;
+        return mainCenterX + number;
     }
 
-    public static double getNewCentrY (double m) {
-        return m * mainCenterY/ 50;
+    public static double getNewCenterY (double m) {
+        double number = m * 50;
+        return mainCenterY - number;
     }
 
     public void writeObjectFigure(ArrayList<Figure> figures) {
@@ -166,8 +168,8 @@ public class ProjectJavaFX extends Application {
         ArrayList<Point> pointsList = new ArrayList<>();
         while ((str = br.readLine()) != null) {
             String[] coordinates = str.split(";");
-            double x = Double.parseDouble(coordinates[0].trim());
-            double y = Double.parseDouble(coordinates[1].trim());
+            double x = getNewCenterX(Double.parseDouble(coordinates[0].trim()));
+            double y = getNewCenterY(Double.parseDouble(coordinates[1].trim()));
             Point pointNew = new Point(x, y);
             pointsList.add(pointNew);
         }
@@ -266,6 +268,7 @@ public class ProjectJavaFX extends Application {
                 writeObjectFigure(figures);
                 anch.getChildren().clear();
                 paint(anch, figures);
+                anch.getChildren().addAll(line1,line2);
             }
         };
 
@@ -284,8 +287,8 @@ public class ProjectJavaFX extends Application {
                 Figure figure = defineFigureByCursor(x,y,figures);
                 try {
                     ArrayList<Point> points = readToFile();
-                    double xP = points.get(0).getX();
-                    double yP = points.get(0).getY();
+                    double xP = points.get(0).getX() - mainCenterX;
+                    double yP = points.get(0).getY() - mainCenterY;
                     figure.move(xP,yP);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -293,6 +296,8 @@ public class ProjectJavaFX extends Application {
                 writeObjectFigure(figures);
                 anch.getChildren().clear();
                 paint(anch, figures);
+                anch.getChildren().addAll(line1,line2);
+
             }
         };
         //для вращения фигуры
@@ -322,6 +327,7 @@ public class ProjectJavaFX extends Application {
                 writeObjectFigure(figures);
                 anch.getChildren().clear();
                 paint(anch, figures);
+                anch.getChildren().addAll(line1,line2);
             }
         };
             // для удаления фигуры
@@ -341,6 +347,7 @@ public class ProjectJavaFX extends Application {
                 writeObjectFigure(figures);
                 anch.getChildren().clear();
                 paint(anch, readObjectFigure());
+                anch.getChildren().addAll(line1,line2);
             }
         };
 
@@ -348,10 +355,10 @@ public class ProjectJavaFX extends Application {
                     buttonCreateFigure.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
+                            anch.getChildren().clear();
                             paint(anch, readObjectFigure());
-//                                group.setVisible(true);
-//                            mainPane.setCenter(paint(readObjectFigure())); //anchorPane = paint(readObject)
-                                gridPane.setVisible(true);
+                            anch.getChildren().addAll(line1,line2);
+                             gridPane.setVisible(true);
                                 mainPane.setRight(gridPane);
                                 stage.show();
 
@@ -376,7 +383,8 @@ public class ProjectJavaFX extends Application {
                             btnSave.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent event) {
-                                    paint(anch, readObjectFigure());
+                                    anch.getChildren().clear();
+//                                    paint(anch, readObjectFigure());
                                     text.clear();
                                     FigureCreator creator = new FigureCreator();
                                     try {
@@ -385,10 +393,8 @@ public class ProjectJavaFX extends Application {
                                         e.printStackTrace();
                                     }
                                     writeObjectFigure(figures);
+                                    anch.getChildren().addAll(line1,line2);
                                     paint(anch, readObjectFigure());
-//                                    mainPane.setCenter(paint(readObjectFigure()));
-                                    //anchorPane = paint(readObject)
-//                                    paint(readObjectFigure());
                                 }
                             });
                         }
@@ -396,9 +402,7 @@ public class ProjectJavaFX extends Application {
         buttonChangeFigure.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-//                mainPane.setCenter(paint(readObjectFigure()));
                 paint(anch, readObjectFigure());
-
                 rootChange.setVisible(true);
                 mainPane.setRight(rootChange);
                 stage.show();
@@ -421,6 +425,9 @@ public class ProjectJavaFX extends Application {
                                 rootNode.getChildren().add(myLabelChange);
 
                                 anch.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+                                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+                                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
+                                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
                             }
                         });
                     }
@@ -443,6 +450,9 @@ public class ProjectJavaFX extends Application {
                                         rootNode.getChildren().add(myLabelScale);
 
                                         anch.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
+                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
 //                                        Label myLabelChange = new Label("Выберите фигуру, которую хотите подвинуть");
 //                                        myLabelChange.setBackground(Background.fill(color2.getValue()));
 //                                        rootNode.getChildren().add(myLabelChange);
@@ -477,6 +487,9 @@ public class ProjectJavaFX extends Application {
                                         rootNode.getChildren().add(myLabelScale);
 
                                         anch.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
+                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
+                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
 //                                        anch.getChildren().clear();
 //                                        try {
 //                                            repaintRotate(readObjectFigure(),readToFileForScale());
@@ -502,14 +515,10 @@ public class ProjectJavaFX extends Application {
                 paint(anch, readObjectFigure());
 
                 anch.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
+                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
 
-
-
-//                mainPane.setCenter(stackPane);
-//                group.setVisible(true);
-//                mainPane.setCenter(paint(readObjectFigure()));
-//                mainPane.setCenter(paint(readObjectFigure()));
-                //anchorPane = paint(readObject)
                 paint(anch, readObjectFigure());
 
             }
@@ -518,8 +527,6 @@ public class ProjectJavaFX extends Application {
         buttonShowAllFigures.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-//                mainPane.setCenter(paint(readObjectFigure()));
-                //anchorPane = paint(readObject)
                 paint(anch, readObjectFigure());
                 gridPane.setVisible(false);
                 rootChange.setVisible(false);

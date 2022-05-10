@@ -30,10 +30,10 @@ public class ProjectJavaFX extends Application {
     final ColorPicker color1 = new ColorPicker(Color.WHITE);
     final ColorPicker color2 = new ColorPicker(Color.AQUA);
     final ColorPicker color3 = new ColorPicker(Color.BLACK);
-    static final double mainCenterX = 430;
+    static final double mainCenterX = 440;
     static final double mainCenterY = 440;
-    private double width = 1000;
-    private double height = 900;
+    private double width = 880;
+    private double height = 880;
     private double multiplierX;
     private double multiplierY;
 
@@ -201,28 +201,9 @@ public class ProjectJavaFX extends Application {
         Button buttonDeleteFigure = new Button("УДАЛИТЬ ФИГУРУ");
         Button buttonShowAllFigures = new Button("ВЫВЕСТИ ВСЕ ФИГУРЫ");
         TextArea text = new TextArea();
+        text.editableProperty();
         text.setPrefSize(15,300);
 
-
-//        GridPane gridPane = new GridPane();
-//        Text writeX = new Text("введите x:");
-//        Text writeY = new Text("введите y:");
-//        TextField tfWriteX = new TextField();
-//        TextField tfWriteY = new TextField();
-//        Button btnAdd = new Button("ДОБАВИТЬ");
-//        Button btnDelete = new Button("УДАЛИТЬ");
-//        Button btnSave = new Button("СОХРАНИТЬ");
-//        gridPane.setMinSize(70, 200);
-//        gridPane.setVgap(5);
-//        gridPane.setHgap(5);
-//        gridPane.setAlignment(Pos.CENTER);
-//        gridPane.add(writeX, 1, 0);
-//        gridPane.add(tfWriteX, 1, 2);
-//        gridPane.add(writeY, 1, 3);
-//        gridPane.add(tfWriteY, 1, 4);
-//        gridPane.add(btnAdd, 1, 5);
-//        gridPane.add(btnDelete,1,6);
-//        gridPane.add(btnSave, 1, 7);
         FlowPane flowPane = new FlowPane(Orientation.VERTICAL);
         Text writeX = new Text("введите x:");
         Text writeY = new Text("введите y:");
@@ -231,9 +212,6 @@ public class ProjectJavaFX extends Application {
         Button btnAdd = new Button("ДОБАВИТЬ");
         Button btnDelete = new Button("УДАЛИТЬ");
         Button btnSave = new Button("СОХРАНИТЬ");
-//        gridPane.setMinSize(70, 200);
-//        gridPane.setVgap(5);
-//        gridPane.setHgap(5);
         flowPane.setAlignment(Pos.CENTER);
         flowPane.getChildren().addAll(writeX,tfWriteX,writeY,tfWriteY,btnAdd,btnDelete,btnSave);
 
@@ -397,6 +375,19 @@ public class ProjectJavaFX extends Application {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+
+                        btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent event) {
+                                try {
+                                    text.undo();
+                                    String str = text.getText();
+                                    writeToFile(str);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                 });
 
@@ -415,22 +406,6 @@ public class ProjectJavaFX extends Application {
                         pane.getChildren().addAll(line1,line2);
                         paint(pane, readObjectFigure());
                         System.out.println(figures);
-                    }
-                });
-                btnDelete.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-//                        try {
-//                            points = readToFile();
-//                            System.out.println(points);
-//                            points.remove(points.get(points.size() - 1));
-//                            System.out.println(points);
-//                            text.setText(text.getText().);
-//
-//
-//                        } catch (IOException e) {
-//                            e.printStackTrace();
-//                        }
                     }
                 });
             }

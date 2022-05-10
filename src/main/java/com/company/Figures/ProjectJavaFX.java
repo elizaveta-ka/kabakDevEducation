@@ -22,6 +22,7 @@ import lombok.SneakyThrows;
 import java.io.*;
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ProjectJavaFX extends Application {
     private ArrayList<Figure> figures;
@@ -31,8 +32,12 @@ public class ProjectJavaFX extends Application {
     final ColorPicker color3 = new ColorPicker(Color.BLACK);
     static final double mainCenterX = 430;
     static final double mainCenterY = 440;
+    private double width = 1000;
+    private double height = 900;
+    private double multiplierX;
+    private double multiplierY;
 
-    AnchorPane anch = new AnchorPane(); //NEW
+    Pane pane = new Pane(); //NEW
 
     public ArrayList<Figure> getFigures() {
         return figures;
@@ -46,24 +51,30 @@ public class ProjectJavaFX extends Application {
         launch(args);
     }
 
-    public void paint(AnchorPane anch, ArrayList<Figure> figures){
-    Line line;
-    Circle circle;
-    for (var f:figures) {
-        if (f.getPoints().size() == 2) {
-            circle = new Circle((int) f.getPoints().get(0).getX(), (int) f.getPoints().get(0).getY(), (int) f.getRadius());
-            anch.getChildren().add(circle);
-        } else {
-            for (int i = 0; i < f.getPoints().size(); i++) {
-                Point value1 = f.getPoints().get(i);
-                int temp = i + 1 < f.getPoints().size() ? i + 1 : 0;
-                Point value2 = f.getPoints().get(temp);
-                line = new Line((int) value1.getX(), (int) value1.getY(), (int) value2.getX(), (int) value2.getY());
-                anch.getChildren().add(line);
+    public void paint(Pane pane, ArrayList<Figure> figures){
+        pane.prefWidth(pane.getWidth());
+        pane.prefHeight(pane.getHeight());
+            Line line;
+            Circle circle;
+            for (var f : figures) {
+                if (f.getPoints().size() == 2) {
+                    circle = new Circle((int) f.getPoints().get(0).getX(),
+                            (int) f.getPoints().get(0).getY(), (int) f.getRadius());
+                    pane.getChildren().add(circle);
+                } else {
+                    for (int i = 0; i < f.getPoints().size(); i++) {
+                        Point value1 = f.getPoints().get(i);
+                        int temp = i + 1 < f.getPoints().size() ? i + 1 : 0;
+                        Point value2 = f.getPoints().get(temp);
+                        line = new Line((int) value1.getX(),
+                                (int) value1.getY(),
+                                (int) value2.getX(),
+                                (int) value2.getY()) ;
+                        pane.getChildren().add(line);
+                    }
+                }
             }
-        }
     }
-}
 
     public void paintOneFigure(AnchorPane anch, Figure f) {
         anch.autosize();
@@ -106,12 +117,12 @@ public class ProjectJavaFX extends Application {
         }
         return null;
     }
-    public static double getNewCenterX (double n) {
+    public double getNewCenterX(double n) {
         double number = n * 50;
         return mainCenterX + number;
     }
 
-    public static double getNewCenterY (double m) {
+    public double getNewCenterY (double m) {
         double number = m * 50;
         return mainCenterY - number;
     }
@@ -128,7 +139,7 @@ public class ProjectJavaFX extends Application {
 
     public ArrayList<Figure> readObjectFigure() {
         ArrayList<Figure> figures = new ArrayList<>();
-                try (FileInputStream fis = new FileInputStream("ProjectFXFile");
+        try (FileInputStream fis = new FileInputStream("ProjectFXFile");
              ObjectInputStream ois = new ObjectInputStream(fis)) {
             figures = (ArrayList<Figure>) ois.readObject();
         } catch (IOException ex) {
@@ -136,15 +147,15 @@ public class ProjectJavaFX extends Application {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-       return figures;
+        return figures;
     }
 
     public static void writeToFile(String str) throws IOException {
         File file = new File("testFileFX");
-       try(FileWriter fr = new FileWriter(file);
-        BufferedWriter bw = new BufferedWriter(fr)) {
-           bw.write(str);
-       }
+        try(FileWriter fr = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fr)) {
+            bw.write(str);
+        }
     }
 
     public double readToFileForScale() throws IOException {
@@ -180,8 +191,8 @@ public class ProjectJavaFX extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("My project JavaFX");
-        stage.setWidth(1400);
-        stage.setHeight(900);
+//        stage.setWidth(1400);
+//        stage.setHeight(900);
         BorderPane mainPane = new BorderPane();
         FlowPane rootNode = new FlowPane(Orientation.VERTICAL,20,20);
 
@@ -193,7 +204,26 @@ public class ProjectJavaFX extends Application {
         text.setPrefSize(15,300);
 
 
-        GridPane gridPane = new GridPane();
+//        GridPane gridPane = new GridPane();
+//        Text writeX = new Text("введите x:");
+//        Text writeY = new Text("введите y:");
+//        TextField tfWriteX = new TextField();
+//        TextField tfWriteY = new TextField();
+//        Button btnAdd = new Button("ДОБАВИТЬ");
+//        Button btnDelete = new Button("УДАЛИТЬ");
+//        Button btnSave = new Button("СОХРАНИТЬ");
+//        gridPane.setMinSize(70, 200);
+//        gridPane.setVgap(5);
+//        gridPane.setHgap(5);
+//        gridPane.setAlignment(Pos.CENTER);
+//        gridPane.add(writeX, 1, 0);
+//        gridPane.add(tfWriteX, 1, 2);
+//        gridPane.add(writeY, 1, 3);
+//        gridPane.add(tfWriteY, 1, 4);
+//        gridPane.add(btnAdd, 1, 5);
+//        gridPane.add(btnDelete,1,6);
+//        gridPane.add(btnSave, 1, 7);
+        FlowPane flowPane = new FlowPane(Orientation.VERTICAL);
         Text writeX = new Text("введите x:");
         Text writeY = new Text("введите y:");
         TextField tfWriteX = new TextField();
@@ -201,19 +231,13 @@ public class ProjectJavaFX extends Application {
         Button btnAdd = new Button("ДОБАВИТЬ");
         Button btnDelete = new Button("УДАЛИТЬ");
         Button btnSave = new Button("СОХРАНИТЬ");
-        gridPane.setMinSize(70, 200);
-        gridPane.setVgap(5);
-        gridPane.setHgap(5);
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.add(writeX, 1, 0);
-        gridPane.add(tfWriteX, 1, 2);
-        gridPane.add(writeY, 1, 3);
-        gridPane.add(tfWriteY, 1, 4);
-        gridPane.add(btnAdd, 1, 5);
-        gridPane.add(btnDelete,1,6);
-        gridPane.add(btnSave, 1, 7);
+//        gridPane.setMinSize(70, 200);
+//        gridPane.setVgap(5);
+//        gridPane.setHgap(5);
+        flowPane.setAlignment(Pos.CENTER);
+        flowPane.getChildren().addAll(writeX,tfWriteX,writeY,tfWriteY,btnAdd,btnDelete,btnSave);
 
-        FlowPane rootChange = new FlowPane(Orientation.VERTICAL, 20, 20);
+        FlowPane rootChange = new FlowPane(Orientation.VERTICAL,20,20);
         Button btnMove = new Button("ПЕРЕМЕСТИТЬ ФИГУРУ");
         Button btnScale = new Button("ИЗМЕНИТЬ РАЗМЕР ФИГУРЫ");
         Button btnRotate = new Button("ВРАЩАТЬ ФИГУРУ");
@@ -234,17 +258,17 @@ public class ProjectJavaFX extends Application {
         rootChange.getChildren().addAll(btnMove,textMove,textMoveX,tfMoveX,textMoveY,tfMoveY,btnOk1,btnScale,textScale,tfScale,btnOk2,btnRotate,textRotate,tfRotate,btnOk3);
 
         mainPane.setLeft(rootNode);
-        mainPane.setRight(gridPane);
+        mainPane.setRight(flowPane);
         mainPane.setRight(rootChange);
 
-        gridPane.setVisible(false);
+        flowPane.setVisible(false);
         rootChange.setVisible(false);
         //new
-        mainPane.setCenter(anch);
+        mainPane.setCenter(pane);
         Line line1 = new Line(430,0,430,900);
-        Line line2 = new Line(0,440,430,440);
-        anch.getChildren().addAll(line1,line2);
-        anch.setBorder(Border.stroke(color3.getValue()));
+        Line line2 = new Line(0,440,1000,440);
+        pane.getChildren().addAll(line1,line2);
+//        anch.setBorder(Border.stroke(color3.getValue()));
 
         //для масштабирования фигуры
         EventHandler<MouseEvent> mouseEvent2 = new EventHandler<MouseEvent>() {
@@ -255,7 +279,6 @@ public class ProjectJavaFX extends Application {
                 for (var f:figures) {
                     System.out.println(f);
                 }
-                System.out.println(anch.getWidth() + " " + anch.getHeight());
                 double x = event.getX();
                 double y = event.getY();
                 Figure figure = defineFigureByCursor(x,y,figures);
@@ -266,9 +289,9 @@ public class ProjectJavaFX extends Application {
                     e.printStackTrace();
                 }
                 writeObjectFigure(figures);
-                anch.getChildren().clear();
-                paint(anch, figures);
-                anch.getChildren().addAll(line1,line2);
+                pane.getChildren().clear();
+                paint(pane, figures);
+                pane.getChildren().addAll(line1,line2);
             }
         };
 
@@ -281,7 +304,6 @@ public class ProjectJavaFX extends Application {
                 for (var f:figures) {
                     System.out.println(f);
                 }
-                System.out.println(anch.getWidth() + " " + anch.getHeight());
                 double x = event.getX();
                 double y = event.getY();
                 Figure figure = defineFigureByCursor(x,y,figures);
@@ -294,9 +316,9 @@ public class ProjectJavaFX extends Application {
                     e.printStackTrace();
                 }
                 writeObjectFigure(figures);
-                anch.getChildren().clear();
-                paint(anch, figures);
-                anch.getChildren().addAll(line1,line2);
+                pane.getChildren().clear();
+                paint(pane, figures);
+                pane.getChildren().addAll(line1,line2);
 
             }
         };
@@ -309,7 +331,6 @@ public class ProjectJavaFX extends Application {
                 for (var f:figures) {
                     System.out.println(f);
                 }
-                System.out.println(anch.getWidth() + " " + anch.getHeight());
                 double x = event.getX();
                 double y = event.getY();
                 Figure figure = defineFigureByCursor(x,y,figures);
@@ -325,12 +346,12 @@ public class ProjectJavaFX extends Application {
                     e.printStackTrace();
                 }
                 writeObjectFigure(figures);
-                anch.getChildren().clear();
-                paint(anch, figures);
-                anch.getChildren().addAll(line1,line2);
+                pane.getChildren().clear();
+                paint(pane, figures);
+                pane.getChildren().addAll(line1,line2);
             }
         };
-            // для удаления фигуры
+        // для удаления фигуры
         EventHandler<MouseEvent> mouseEvent = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -339,70 +360,85 @@ public class ProjectJavaFX extends Application {
                 for (var f:figures) {
                     System.out.println(f);
                 }
-                System.out.println(anch.getWidth() + " " + anch.getHeight());
                 double x = event.getX();
                 double y = event.getY();
                 Figure figure = defineFigureByCursor(x,y,figures);
                 figures.remove(figure);
                 writeObjectFigure(figures);
-                anch.getChildren().clear();
-                paint(anch, readObjectFigure());
-                anch.getChildren().addAll(line1,line2);
+                pane.getChildren().clear();
+                paint(pane, readObjectFigure());
+                pane.getChildren().addAll(line1,line2);
             }
         };
 
         ArrayList<Figure> figures = new ArrayList<>();
-                    buttonCreateFigure.setOnAction(new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            anch.getChildren().clear();
-                            paint(anch, readObjectFigure());
-                            anch.getChildren().addAll(line1,line2);
-                             gridPane.setVisible(true);
-                                mainPane.setRight(gridPane);
-                                stage.show();
+        buttonCreateFigure.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                pane.getChildren().clear();
+                paint(pane, readObjectFigure());
+                pane.getChildren().addAll(line1,line2);
+                flowPane.setVisible(true);
+                mainPane.setRight(flowPane);
+                stage.show();
 
-                            ArrayList<Point> points = new ArrayList<>();
-                                    btnAdd.setOnAction(new EventHandler<ActionEvent>() {
-                                        @Override
-                                        public void handle(ActionEvent event) {
-                                            String readX = tfWriteX.getText();
-                                            String readY = tfWriteY.getText();
-                                            text.appendText(readX + ";" + readY + "\n");
-                                            tfWriteX.clear();
-                                            tfWriteY.clear();
-                                            String str = text.getText();
-                                            try {
-                                                writeToFile(str);
-                                            } catch (IOException e) {
-                                                e.printStackTrace();
-                                            }
-                                        }
-                                    });
-
-                            btnSave.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent event) {
-                                    anch.getChildren().clear();
-//                                    paint(anch, readObjectFigure());
-                                    text.clear();
-                                    FigureCreator creator = new FigureCreator();
-                                    try {
-                                        figures.add(creator.createFigure(readToFile()));
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
-                                    }
-                                    writeObjectFigure(figures);
-                                    anch.getChildren().addAll(line1,line2);
-                                    paint(anch, readObjectFigure());
-                                }
-                            });
+//                ArrayList<Point> points = new ArrayList<>();
+                btnAdd.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        String readX = tfWriteX.getText();
+                        String readY = tfWriteY.getText();
+                        text.appendText(readX + ";" + readY + "\n");
+                        tfWriteX.clear();
+                        tfWriteY.clear();
+                        String str = text.getText();
+                        try {
+                            writeToFile(str);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-                    });
+                    }
+                });
+
+                btnSave.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        pane.getChildren().clear();
+                        text.clear();
+                        FigureCreator creator = new FigureCreator();
+                        try {
+                            figures.add(creator.createFigure(readToFile()));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        writeObjectFigure(figures);
+                        pane.getChildren().addAll(line1,line2);
+                        paint(pane, readObjectFigure());
+                        System.out.println(figures);
+                    }
+                });
+                btnDelete.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+//                        try {
+//                            points = readToFile();
+//                            System.out.println(points);
+//                            points.remove(points.get(points.size() - 1));
+//                            System.out.println(points);
+//                            text.setText(text.getText().);
+//
+//
+//                        } catch (IOException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+                });
+            }
+        });
         buttonChangeFigure.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                paint(anch, readObjectFigure());
+                paint(pane, readObjectFigure());
                 rootChange.setVisible(true);
                 mainPane.setRight(rootChange);
                 stage.show();
@@ -424,35 +460,35 @@ public class ProjectJavaFX extends Application {
                                 myLabelChange.setBackground(Background.fill(color2.getValue()));
                                 rootNode.getChildren().add(myLabelChange);
 
-                                anch.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
-                                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
-                                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
-                                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
+                                pane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
+                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
                             }
                         });
                     }
                 });
-                        btnOk2.setOnAction(new EventHandler<ActionEvent>() {
+                btnOk2.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        text.setText(tfScale.getText());
+                        try {
+                            writeToFile(text.getText());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        btnScale.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                text.setText(tfScale.getText());
-                                try {
-                                    writeToFile(text.getText());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                btnScale.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent event) {
 
-                                        Label myLabelScale = new Label("Кликай на фигуру, чтобы она масштабировалась");
-                                        myLabelScale.setBackground(Background.fill(color2.getValue()));
-                                        rootNode.getChildren().add(myLabelScale);
+                                Label myLabelScale = new Label("Кликай на фигуру, чтобы она масштабировалась");
+                                myLabelScale.setBackground(Background.fill(color2.getValue()));
+                                rootNode.getChildren().add(myLabelScale);
 
-                                        anch.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
-                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
-                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
-                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
+                                pane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
+                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
 //                                        Label myLabelChange = new Label("Выберите фигуру, которую хотите подвинуть");
 //                                        myLabelChange.setBackground(Background.fill(color2.getValue()));
 //                                        rootNode.getChildren().add(myLabelChange);
@@ -466,30 +502,30 @@ public class ProjectJavaFX extends Application {
 //                                            e.printStackTrace();
 //                                        }
 //                                        paint(readObjectFigure());
-                                    }
-                                });
                             }
                         });
-                        btnOk3.setOnAction(new EventHandler<ActionEvent>() {
+                    }
+                });
+                btnOk3.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                        text.setText(tfRotate.getText());
+                        try {
+                            writeToFile(text.getText());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        btnRotate.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                text.setText(tfRotate.getText());
-                                try {
-                                    writeToFile(text.getText());
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
-                                btnRotate.setOnAction(new EventHandler<ActionEvent>() {
-                                    @Override
-                                    public void handle(ActionEvent event) {
-                                        Label myLabelScale = new Label("Кликай на фигуру, чтобы она крутилась");
-                                        myLabelScale.setBackground(Background.fill(color2.getValue()));
-                                        rootNode.getChildren().add(myLabelScale);
+                                Label myLabelScale = new Label("Кликай на фигуру, чтобы она крутилась");
+                                myLabelScale.setBackground(Background.fill(color2.getValue()));
+                                rootNode.getChildren().add(myLabelScale);
 
-                                        anch.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
-                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
-                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
-                                        anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+                                pane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
+                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
+                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
 //                                        anch.getChildren().clear();
 //                                        try {
 //                                            repaintRotate(readObjectFigure(),readToFileForScale());
@@ -497,10 +533,10 @@ public class ProjectJavaFX extends Application {
 //                                            e.printStackTrace();
 //                                        }
 //                                        paint(readObjectFigure());
-                                    }
-                                });
                             }
                         });
+                    }
+                });
             }
         });
         buttonDeleteFigure.setOnAction(new EventHandler<ActionEvent>() {
@@ -509,17 +545,17 @@ public class ProjectJavaFX extends Application {
                 Label myLabelDelete = new Label("Выберите фигуру, которую хотите удалить");
                 myLabelDelete.setBackground(Background.fill(color2.getValue()));
                 rootNode.getChildren().add(myLabelDelete);
-                gridPane.setVisible(false);
+                flowPane.setVisible(false);
                 rootChange.setVisible(false);
 
-                paint(anch, readObjectFigure());
+                paint(pane, readObjectFigure());
 
-                anch.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
-                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
-                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
-                anch.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
+                pane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
+                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
 
-                paint(anch, readObjectFigure());
+                paint(pane, readObjectFigure());
 
             }
         });
@@ -527,8 +563,8 @@ public class ProjectJavaFX extends Application {
         buttonShowAllFigures.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                paint(anch, readObjectFigure());
-                gridPane.setVisible(false);
+                paint(pane, readObjectFigure());
+                flowPane.setVisible(false);
                 rootChange.setVisible(false);
             }
         });

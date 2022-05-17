@@ -48,6 +48,7 @@ public abstract class Figure implements Serializable {
     public List<Point> getPoints() {
         return points;
     }
+
     public double getRadius() {
         Point a = points.get(0);
         Point b = points.get(1);
@@ -75,11 +76,25 @@ public abstract class Figure implements Serializable {
     }
 
     protected void rotate(double angle) {
-        angle *= Math.PI / 180;
-        for (int i = 0; i < points.size(); i++) {
-            points.get(i).setX(((points.get(i).getX() - getCenterFigure().getX()) * Math.cos(angle) - (points.get(i).getY() - getCenterFigure().getY()) * Math.sin(angle)) + getCenterFigure().getX());
-            points.get(i).setY(((points.get(i).getY() - getCenterFigure().getY()) * Math.cos(angle) - (points.get(i).getY() - getCenterFigure().getY()) * Math.sin(angle)) + getCenterFigure().getY());
+//        angle *= Math.PI / 180;
+//        for (int i = 0; i < points.size(); i++) {
+//            points.get(i).setX(((points.get(i).getX() - getCenterFigure().getX()) * Math.cos(angle) - (points.get(i).getY() - getCenterFigure().getY()) * Math.sin(angle)) + getCenterFigure().getX());
+//            points.get(i).setY(((points.get(i).getY() - getCenterFigure().getY()) * Math.cos(angle) - (points.get(i).getY() - getCenterFigure().getY()) * Math.sin(angle)) + getCenterFigure().getY());
+//        }
+        List<Point> points = this.points;
+        if (angle > 0 && angle < 360 && points.size() > 2) {
+            Point center = this.getCenterFigure();
+            double xC = center.getX();
+            double yC = center.getY();
+            points.replaceAll(x -> {double a = x.getX() - xC; double b = x.getY() - yC;
+            x.setX(xC + a * Math.cos(Math.toRadians(angle)) - b * Math.sin(Math.toRadians(angle)));
+            x.setY(yC + a * Math.sin(Math.toRadians(angle)) + b * Math.cos(Math.toRadians(angle)));
+            return x;
+            });
+            this.points = points;
         }
+        else if (points.size() == 2) System.out.println(" circle?");
+        else System.out.println("error");
     }
 
     protected void move(double a, double b) {
@@ -88,14 +103,35 @@ public abstract class Figure implements Serializable {
             points.get(i).setY(points.get(i).getY() + b);
         }
     }
-    public boolean containPoint(double x, double y) {
+//    public boolean containPoint(double x, double y, double multiplierX, double multiplierY) {
+//        boolean flag = false;
+//        for (int i = 0; i < this.getPoints().size(); i++) {
+//            int j = i == this.getPoints().size() - 1 ? 0 : i + 1;
+//            double x1 = this.getPoints().get(i).getX() * multiplierX;
+//            double x2 = this.getPoints().get(j).getX() * multiplierX;
+//            double y1 = this.getPoints().get(i).getY() * multiplierY;
+//            double y2 = this.getPoints().get(j).getY() * multiplierY;
+//            if(x2 - x1 != 0) {
+//                double a = (y2 - y1) / (x2 - x1);
+//                double b = y1 - a * x1;
+//                if ((Math.abs(y - (a * x + b)) <= 2)) {
+//                    flag = true;
+//                } else {
+//                    if ((Math.abs(x - x1) <= 2) && (y >= Math.min(y1,y2)) && y <= Math.max(y1,y2)) flag = true;
+//                }
+//            }
+//        }
+//        return flag;
+//    }
+
+    public boolean containPoint(double x, double y, int multiplierX, int multiplierY) {
         boolean flag = false;
         for (int i = 0; i < this.getPoints().size(); i++) {
             int j = i == this.getPoints().size() - 1 ? 0 : i + 1;
-            double x1 = this.getPoints().get(i).getX(); //*multiplierX
-            double x2 = this.getPoints().get(j).getX(); //*multiplierX
-            double y1 = this.getPoints().get(i).getY(); //*multiplierY
-            double y2 = this.getPoints().get(j).getY(); //*multiplierY
+            double x1 = this.getPoints().get(i).getX() * multiplierX;
+            double x2 = this.getPoints().get(j).getX() * multiplierX;
+            double y1 = this.getPoints().get(i).getY() * multiplierY;
+            double y2 = this.getPoints().get(j).getY() * multiplierY;
             if(x2 - x1 != 0) {
                 double a = (y2 - y1) / (x2 - x1);
                 double b = y1 - a * x1;
@@ -109,6 +145,27 @@ public abstract class Figure implements Serializable {
         return flag;
     }
 
+//    public boolean containPoint(double x, double y) {
+//        boolean flag = false;
+//        for (int i = 0; i < this.getPoints().size(); i++) {
+//            int j = i == this.getPoints().size() - 1 ? 0 : i + 1;
+//            double x1 = this.getPoints().get(i).getX();
+//            double x2 = this.getPoints().get(j).getX();
+//            double y1 = this.getPoints().get(i).getY();
+//            double y2 = this.getPoints().get(j).getY();
+//            if(x2 - x1 != 0) {
+//                double a = (y2 - y1) / (x2 - x1);
+//                double b = y1 - a * x1;
+//                if ((Math.abs(y - (a * x + b)) <= 2)) {
+//                    flag = true;
+//                } else {
+//                    if ((Math.abs(x - x1) <= 2) && (y >= Math.min(y1,y2)) && y <= Math.max(y1,y2)) flag = true;
+//                }
+//            }
+//        }
+//        return flag;
+//    }
+
     protected void scale(double num) {
         if(points.size() == 2) {
             points.get(1).setX(((points.get(1).getX() - points.get(0).getX())* num) + points.get(0).getX());
@@ -119,8 +176,8 @@ public abstract class Figure implements Serializable {
                 points.get(i).setY(((points.get(i).getY() - getCenterFigure().getY()) * num) + getCenterFigure().getY());
             }
         }
-        this.getPerimeter(); //пересчитывает периметр и площадь
-        this.getArea();
+//        this.getPerimeter(); //пересчитывает периметр и площадь
+//        this.getArea();
     }
 
     protected static Point getCenterTriangle(Point a, Point b, Point c) {

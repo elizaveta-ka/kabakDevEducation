@@ -15,6 +15,7 @@ public class Circle extends Figure {
         super(points);
 //        this.radius = getRadius();
     }
+
     @Override
     public double getPerimeter() {
         double perimeter = 2 * Math.PI * getRadius();
@@ -26,6 +27,7 @@ public class Circle extends Figure {
         double area = Math.PI * Math.pow(getRadius(), 2);
         return area;
     }
+
     public void rotate(double angle) {
         System.out.println("");
     }
@@ -33,14 +35,15 @@ public class Circle extends Figure {
     public Point getCenterFigure() {
         double x = points.get(0).getX();
         double y = points.get(0).getY();
-        return new Point(x,y);
+        return new Point(x, y);
     }
 
     @Override
-    public boolean containPoint(double x, double y) {
+    public boolean containPoint(double x, double y, int multiplierX, int multiplierY) {
         this.getCenterFigure();
-        double distance = Math.sqrt((Math.pow(x - this.getCenterFigure().getX(), 2))
-                + Math.pow(y - this.getCenterFigure().getY(), 2));
-        return (Math.abs(distance) <= radius);
+        int multiplier = Math.min(multiplierX,multiplierY);
+        double distance = Math.sqrt((Math.pow(x - this.getCenterFigure().getX() * multiplier, 2))
+                + Math.pow(y - this.getCenterFigure().getY() * multiplier, 2));
+        return (Math.abs(distance) <= radius * multiplier);
     }
 }

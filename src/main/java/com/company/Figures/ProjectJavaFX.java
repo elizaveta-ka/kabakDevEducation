@@ -2,27 +2,24 @@ package com.company.Figures;
 
 import com.company.Figures.CreateFigures.FigureCreator;
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.chart.NumberAxis;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
 import javafx.event.*;
 import javafx.geometry.*;
-import lombok.SneakyThrows;
 
 import java.io.*;
-import java.time.Year;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class ProjectJavaFX extends Application {
     private ArrayList<Figure> figures;
@@ -32,12 +29,12 @@ public class ProjectJavaFX extends Application {
     final ColorPicker color3 = new ColorPicker(Color.BLACK);
     static final double mainCenterX = 440;
     static final double mainCenterY = 440;
-    private double width = 880;
-    private double height = 880;
-    private double multiplierX;
-    private double multiplierY;
+    private int multiplierX;
+    private int multiplierY;
 
     Pane pane = new Pane(); //NEW
+    private double width = pane.getWidth();
+    private double height = pane.getHeight();
 
     public ArrayList<Figure> getFigures() {
         return figures;
@@ -51,48 +48,80 @@ public class ProjectJavaFX extends Application {
         launch(args);
     }
 
-    public void paint(Pane pane, ArrayList<Figure> figures){
-        pane.prefWidth(pane.getWidth());
-        pane.prefHeight(pane.getHeight());
-            Line line;
-            Circle circle;
-            for (var f : figures) {
-                if (f.getPoints().size() == 2) {
-                    circle = new Circle((int) f.getPoints().get(0).getX(),
-                            (int) f.getPoints().get(0).getY(), (int) f.getRadius());
-                    pane.getChildren().add(circle);
-                } else {
-                    for (int i = 0; i < f.getPoints().size(); i++) {
-                        Point value1 = f.getPoints().get(i);
-                        int temp = i + 1 < f.getPoints().size() ? i + 1 : 0;
-                        Point value2 = f.getPoints().get(temp);
-                        line = new Line((int) value1.getX(),
-                                (int) value1.getY(),
-                                (int) value2.getX(),
-                                (int) value2.getY()) ;
-                        pane.getChildren().add(line);
+    public void paint(Pane pane, ArrayList<Figure> figures) {
+        pane.prefWidth(880);
+        pane.prefHeight(880);
+
+                if(figures.size() > 0) {
+
+                    double maxX = figures.get(0).getPoints().get(0).getX();
+                    double maxY = figures.get(0).getPoints().get(0).getY();
+                    double minX = figures.get(0).getPoints().get(0).getX();
+                    double minY = figures.get(0).getPoints().get(0).getY();
+
+                    for (var f : figures) {
+                        for (var p : f.getPoints()) {
+                            if (Math.abs(p.getX()) > Math.abs(maxX)) maxX = p.getX();
+                            if (Math.abs(p.getY()) > Math.abs(maxY)) maxY = p.getY();
+                            if (Math.abs(p.getX()) < Math.abs(maxX)) minX = p.getX();
+                            if (Math.abs(p.getY()) < Math.abs(maxY)) minY = p.getY();
+                        }
+                    }
+                    if (maxX == 0) maxX = 1;
+                    // нужен отдельный мультиплайер для круга
+//                    for (var f:figures) {
+//                        if (f.getPoints().size() == 2) {
+//                            multiplierX = (int) ((pane.getWidth() / 2 * 0.9) / Math.abs(maxX + (maxX - minX)));
+//                            multiplierY = (int) ((pane.getHeight() / 2 * 0.9) / Math.abs(maxY + (maxY - minY)));
+//                        } else {
+                            multiplierX = (int) ((mainCenterX * 0.9) / Math.abs(maxX));
+                            multiplierY = (int) ((mainCenterY * 0.9) / Math.abs(maxY));
+//                        }
+//                    }
+                    System.out.println("mlpx " + multiplierX);
+                    System.out.println("mlpy " + multiplierY);
+
+                    Line line;
+                    Circle circle;
+                    for (var f : figures) {
+                        if (f.getPoints().size() == 2) {
+                            int multiplier = Math.min(multiplierX,multiplierY);
+                            circle = new Circle((int) f.getPoints().get(0).getX() * multiplier + mainCenterX,
+                                    -(int) f.getPoints().get(0).getY() * multiplier + mainCenterY, (int) f.getRadius() * multiplier);
+                            pane.getChildren().add(circle);
+                        } else {
+                            for (int i = 0; i < f.getPoints().size(); i++) {
+                                Point value1 = f.getPoints().get(i);
+                                int temp = i + 1 < f.getPoints().size() ? i + 1 : 0;
+                                Point value2 = f.getPoints().get(temp);
+                                line = new Line((int) value1.getX() * multiplierX + mainCenterX,
+                                        - (int) value1.getY() * multiplierY + mainCenterY,
+                                        (int) value2.getX() * multiplierX + mainCenterX,
+                                        -(int) value2.getY() * multiplierY + mainCenterY);
+                                pane.getChildren().add(line);
+                            }
+                        }
                     }
                 }
-            }
     }
-
-    public void paintOneFigure(AnchorPane anch, Figure f) {
-        anch.autosize();
-        Line line;
-        Circle circle;
-        if (f.getPoints().size() == 2) {
-            circle = new Circle((int) f.getPoints().get(0).getX(), (int) f.getPoints().get(0).getY(), (int) f.getRadius());
-            anch.getChildren().add(circle);
-        } else {
-            for (int i = 0; i < f.getPoints().size(); i++) {
-                Point value1 = f.getPoints().get(i);
-                int temp = i + 1 < f.getPoints().size() ? i + 1 : 0;
-                Point value2 = f.getPoints().get(temp);
-                line = new Line((int) value1.getX(), (int) value1.getY(), (int) value2.getX(), (int) value2.getY());
-                anch.getChildren().add(line);
-            }
-        }
-    }
+//
+//    public void paintOneFigure(AnchorPane anch, Figure f) {
+//        anch.autosize();
+//        Line line;
+//        Circle circle;
+//        if (f.getPoints().size() == 2) {
+//            circle = new Circle((int) f.getPoints().get(0).getX(), (int) f.getPoints().get(0).getY(), (int) f.getRadius());
+//            anch.getChildren().add(circle);
+//        } else {
+//            for (int i = 0; i < f.getPoints().size(); i++) {
+//                Point value1 = f.getPoints().get(i);
+//                int temp = i + 1 < f.getPoints().size() ? i + 1 : 0;
+//                Point value2 = f.getPoints().get(temp);
+//                line = new Line((int) value1.getX(), (int) value1.getY(), (int) value2.getX(), (int) value2.getY());
+//                anch.getChildren().add(line);
+//            }
+//        }
+//    }
 //
 //    public void repaintMove(Figure f, ArrayList<Point> points){
 //                for (int i = 0; i < f.getPoints().size(); i++) {
@@ -111,19 +140,19 @@ public class ProjectJavaFX extends Application {
 //        writeObjectFigure(figures);
 //    }
 
-    public Figure defineFigureByCursor(double x, double y, ArrayList<Figure> figures) {
+    public Figure defineFigureByCursor(double x, double y, int multiplierX, int multiplierY, ArrayList<Figure> figures) {
         for (var f:figures) {
-            if (f.containPoint(x,y)) return f;
+            if (f.containPoint(x,y,multiplierX,multiplierY)) return f;
         }
         return null;
     }
-    public double getNewCenterX(double n) {
-        double number = n * 50;
+    public double getNewCenterX(double n, double multiplierX) {
+        double number = n * multiplierX;
         return mainCenterX + number;
     }
 
-    public double getNewCenterY (double m) {
-        double number = m * 50;
+    public double getNewCenterY (double m, double multiplierY) {
+        double number = m * multiplierY;
         return mainCenterY - number;
     }
 
@@ -167,6 +196,7 @@ public class ProjectJavaFX extends Application {
         while((str = br.readLine()) != null) {
             num = Double.parseDouble(str);
         }
+//        br.close();
 
         return num;
     }
@@ -179,11 +209,12 @@ public class ProjectJavaFX extends Application {
         ArrayList<Point> pointsList = new ArrayList<>();
         while ((str = br.readLine()) != null) {
             String[] coordinates = str.split(";");
-            double x = getNewCenterX(Double.parseDouble(coordinates[0].trim()));
-            double y = getNewCenterY(Double.parseDouble(coordinates[1].trim()));
+            double x = Double.parseDouble(coordinates[0].trim());
+            double y = Double.parseDouble(coordinates[1].trim());
             Point pointNew = new Point(x, y);
             pointsList.add(pointNew);
         }
+//        br.close();
         return pointsList;
     }
 
@@ -191,18 +222,16 @@ public class ProjectJavaFX extends Application {
     @Override
     public void start(Stage stage) {
         stage.setTitle("My project JavaFX");
-//        stage.setWidth(1400);
-//        stage.setHeight(900);
         BorderPane mainPane = new BorderPane();
-        FlowPane rootNode = new FlowPane(Orientation.VERTICAL,20,20);
+        FlowPane rootNode = new FlowPane(Orientation.VERTICAL,5,5);
 
         Button buttonCreateFigure = new Button("СОЗДАТЬ ФИГУРУ");
         Button buttonChangeFigure = new Button("ИЗМЕНИТЬ ФИГУРУ");
         Button buttonDeleteFigure = new Button("УДАЛИТЬ ФИГУРУ");
         Button buttonShowAllFigures = new Button("ВЫВЕСТИ ВСЕ ФИГУРЫ");
         TextArea text = new TextArea();
-        text.editableProperty();
-        text.setPrefSize(15,300);
+//        text.editableProperty();
+        text.setPrefSize(60,300);
 
         FlowPane flowPane = new FlowPane(Orientation.VERTICAL);
         Text writeX = new Text("введите x:");
@@ -243,10 +272,10 @@ public class ProjectJavaFX extends Application {
         rootChange.setVisible(false);
         //new
         mainPane.setCenter(pane);
-        Line line1 = new Line(430,0,430,900);
-        Line line2 = new Line(0,440,1000,440);
+        Line line1 = new Line(440,0,440,880);
+        Line line2 = new Line(0,440,880,440);
         pane.getChildren().addAll(line1,line2);
-//        anch.setBorder(Border.stroke(color3.getValue()));
+        pane.setBorder(Border.stroke(color3.getValue()));
 
         //для масштабирования фигуры
         EventHandler<MouseEvent> mouseEvent2 = new EventHandler<MouseEvent>() {
@@ -257,9 +286,9 @@ public class ProjectJavaFX extends Application {
                 for (var f:figures) {
                     System.out.println(f);
                 }
-                double x = event.getX();
-                double y = event.getY();
-                Figure figure = defineFigureByCursor(x,y,figures);
+                double x = event.getX() - mainCenterX;
+                double y = -event.getY() + mainCenterY;
+                Figure figure = defineFigureByCursor(x,y,multiplierX, multiplierY, figures);
                 try {
                     double num = readToFileForScale();
                     figure.scale(num);
@@ -282,13 +311,13 @@ public class ProjectJavaFX extends Application {
                 for (var f:figures) {
                     System.out.println(f);
                 }
-                double x = event.getX();
-                double y = event.getY();
-                Figure figure = defineFigureByCursor(x,y,figures);
+                double x = event.getX() - mainCenterX;
+                double y = -event.getY() + mainCenterY;
+                Figure figure = defineFigureByCursor(x,y,multiplierX,multiplierY,figures);
                 try {
                     ArrayList<Point> points = readToFile();
-                    double xP = points.get(0).getX() - mainCenterX;
-                    double yP = points.get(0).getY() - mainCenterY;
+                    double xP = points.get(0).getX();
+                    double yP = points.get(0).getY();
                     figure.move(xP,yP);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -309,9 +338,9 @@ public class ProjectJavaFX extends Application {
                 for (var f:figures) {
                     System.out.println(f);
                 }
-                double x = event.getX();
-                double y = event.getY();
-                Figure figure = defineFigureByCursor(x,y,figures);
+                double x = event.getX() - mainCenterX;
+                double y = -event.getY() + mainCenterY;
+                Figure figure = defineFigureByCursor(x,y,multiplierX, multiplierY, figures);
                 if(figure.getClass().getSimpleName().equals("Circle")) {
                     Label label = new Label("Ты правда собрался вращать круг?");
                     label.setBackground(Background.fill(color2.getValue()));
@@ -338,9 +367,9 @@ public class ProjectJavaFX extends Application {
                 for (var f:figures) {
                     System.out.println(f);
                 }
-                double x = event.getX();
-                double y = event.getY();
-                Figure figure = defineFigureByCursor(x,y,figures);
+                double x = event.getX() - mainCenterX;
+                double y = -event.getY() + mainCenterY;
+                Figure figure = defineFigureByCursor(x,y,multiplierX, multiplierY, figures);
                 figures.remove(figure);
                 writeObjectFigure(figures);
                 pane.getChildren().clear();
@@ -365,6 +394,7 @@ public class ProjectJavaFX extends Application {
                     @Override
                     public void handle(ActionEvent event) {
                         String readX = tfWriteX.getText();
+
                         String readY = tfWriteY.getText();
                         text.appendText(readX + ";" + readY + "\n");
                         tfWriteX.clear();
@@ -394,6 +424,7 @@ public class ProjectJavaFX extends Application {
                 btnSave.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+
                         pane.getChildren().clear();
                         text.clear();
                         FigureCreator creator = new FigureCreator();
@@ -420,6 +451,9 @@ public class ProjectJavaFX extends Application {
                 btnOk1.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+                        pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
+                        pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
                         String moveX = tfMoveX.getText();
                         String moveY = tfMoveY.getText();
                         text.setText(moveX + ";" + moveY);
@@ -431,14 +465,11 @@ public class ProjectJavaFX extends Application {
                         btnMove.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                Label myLabelChange = new Label("Кликай на фигуру, чтобы она двигалась");
-                                myLabelChange.setBackground(Background.fill(color2.getValue()));
-                                rootNode.getChildren().add(myLabelChange);
+                                Label label1 = new Label("Кликай на фигуру, чтобы она двигалась");
+                                label1.setBackground(Background.fill(color2.getValue()));
+                                rootNode.getChildren().add(label1);
 
                                 pane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
-                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
-                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
-                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
                             }
                         });
                     }
@@ -446,6 +477,9 @@ public class ProjectJavaFX extends Application {
                 btnOk2.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+                        pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+                        pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
                         text.setText(tfScale.getText());
                         try {
                             writeToFile(text.getText());
@@ -456,14 +490,14 @@ public class ProjectJavaFX extends Application {
                             @Override
                             public void handle(ActionEvent event) {
 
-                                Label myLabelScale = new Label("Кликай на фигуру, чтобы она масштабировалась");
-                                myLabelScale.setBackground(Background.fill(color2.getValue()));
-                                rootNode.getChildren().add(myLabelScale);
+                                Label label2 = new Label("Кликай на фигуру, чтобы она масштабировалась");
+                                label2.setBackground(Background.fill(color2.getValue()));
+                                rootNode.getChildren().add(label2);
 
                                 pane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
-                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
-                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
-                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
+//                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
+//                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
+//                                pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
 //                                        Label myLabelChange = new Label("Выберите фигуру, которую хотите подвинуть");
 //                                        myLabelChange.setBackground(Background.fill(color2.getValue()));
 //                                        rootNode.getChildren().add(myLabelChange);
@@ -493,9 +527,10 @@ public class ProjectJavaFX extends Application {
                         btnRotate.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent event) {
-                                Label myLabelScale = new Label("Кликай на фигуру, чтобы она крутилась");
-                                myLabelScale.setBackground(Background.fill(color2.getValue()));
-                                rootNode.getChildren().add(myLabelScale);
+
+                                Label label3 = new Label("Кликай на фигуру, чтобы она крутилась");
+                                label3.setBackground(Background.fill(color2.getValue()));
+                                rootNode.getChildren().add(label3);
 
                                 pane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent3);
                                 pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent2);
@@ -517,13 +552,13 @@ public class ProjectJavaFX extends Application {
         buttonDeleteFigure.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Label myLabelDelete = new Label("Выберите фигуру, которую хотите удалить");
-                myLabelDelete.setBackground(Background.fill(color2.getValue()));
-                rootNode.getChildren().add(myLabelDelete);
+                Label label4 = new Label("Выберите фигуру, которую хотите удалить");
+                label4.setBackground(Background.fill(color2.getValue()));
+                rootNode.getChildren().add(label4);
                 flowPane.setVisible(false);
                 rootChange.setVisible(false);
 
-                paint(pane, readObjectFigure());
+//                paint(pane, readObjectFigure());
 
                 pane.addEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent);
                 pane.removeEventFilter(MouseEvent.MOUSE_CLICKED, mouseEvent1);
